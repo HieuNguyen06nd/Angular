@@ -74,12 +74,10 @@ tClose.addEventListener('click', function(){
     showClass.classList.remove('showsearch')
 })
 
-//show dpt menu
-
 const dptButton = document.querySelector('.dpt-cat .dpt-trigger'),
     dptClass =document.querySelector('.site');
 
-dptButton.addEventListener('click', function(){
+    dptButton.addEventListener('click', function(){
         dptClass.classList.toggle('showdpt')
     })
 
@@ -109,8 +107,6 @@ var productBig = new Swiper('.big-image', {
     }
    
 });
-//show dpt menu
-
 
 
 // stock product bar %
@@ -132,7 +128,7 @@ const divtoShow = '.mini-cart';
 const divPopup = document.querySelector(divtoShow);
 const divTriger = document.querySelector('.cart-trigger');
 
-divTriger.addEventListener('click', () => {
+divTriger.addEventListener('click', function(){
     setTimeout(() =>{
         if(!divPopup.classList.contains('show')){
             divPopup.classList.add('show')
@@ -141,7 +137,7 @@ divTriger.addEventListener('click', () => {
 })
 
 //auto cose by click autoside , filter
-document.addEventListener('click', (e) => {
+document.addEventListener('click',(e)=> {
     const isClosest = e.target.closest(divtoShow);
     if(!isClosest && divPopup.classList.contains('show')){
       divPopup.classList.remove('show')

@@ -1,0 +1,47 @@
+<h2 mat-dialog-title>
+  {{ isLogin ? 'Đăng nhập' : 'Đăng ký' }}
+</h2>
+
+<mat-dialog-content class="mat-typography">
+  <form [formGroup]="isLogin ? loginForm : signupForm" (ngSubmit)="onSubmit()">
+    <ng-container *ngIf="isLogin; else signupTemplate">
+      <!-- Nội dung form đăng nhập -->
+      <!-- ... -->
+    </ng-container>
+
+    <ng-template #signupTemplate>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Họ và Tên</mat-label>
+        <input matInput formControlName="fullName" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Số điện thoại</mat-label>
+        <input matInput formControlName="phone" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Mật khẩu</mat-label>
+        <input matInput type="password" formControlName="password" />
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit">
+        Đăng ký
+      </button>
+
+      <p style="margin-top: 10px;">
+        Bạn đã có tài khoản?
+        <a style="cursor: pointer; color: #007bff;" (click)="toggleForm()">Đăng nhập</a>
+      </p>
+    </ng-template>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="closeDialog()">Đóng</button>
+</mat-dialog-actions>

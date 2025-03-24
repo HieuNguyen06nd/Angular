@@ -1,0 +1,88 @@
+/* Chọn container của dialog qua lớp .mat-dialog-container */
+:host ::ng-deep .mat-dialog-container {
+    background-color: #1f1f1f; /* Nền tối */
+    color: #fff;              /* Màu chữ */
+    border-radius: 16px;      /* Bo góc mềm mại */
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5); /* Đổ bóng */
+    padding: 24px;            /* Khoảng trống bên trong */
+    max-width: 400px;         /* Giới hạn độ rộng */
+    width: 100%;
+  }
+  
+  /* Tiêu đề */
+  :host h2.mat-dialog-title {
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  
+  /* Vùng nội dung dialog */
+  :host .mat-typography {
+    /* Các thẻ form-field */
+    .mat-form-field {
+      width: 100%;
+      margin-bottom: 16px;
+    }
+  
+    /* Label (tiêu đề input) */
+    .mat-form-field-label {
+      color: rgba(255, 255, 255, 0.7);
+    }
+  
+    /* Chữ trong input */
+    .mat-input-element {
+      color: #fff;
+    }
+  
+    /* Nút chính (Đăng nhập/Đăng ký) - color=\"primary\" */
+    .mat-raised-button.mat-primary {
+      background-color: #6f42c1;
+      color: #fff;
+      margin-right: 8px;
+    }
+  
+    /* Nút Google - color=\"accent\" */
+    .mat-raised-button.mat-accent {
+      background-color: #db4437; /* Đỏ Google */
+      color: #fff;
+      margin-right: 8px;
+    }
+  
+    /* Nút Facebook - color=\"warn\" */
+    .mat-raised-button.mat-warn {
+      background-color: #4267b2; /* Xanh Facebook */
+      color: #fff;
+    }
+  
+    /* Đoạn text phía dưới (VD: 'Bạn chưa có tài khoản?') */
+    p {
+      margin-top: 16px;
+      font-size: 0.95rem;
+      color: #ccc;
+    }
+  
+    /* Link chuyển form (Đăng nhập <-> Đăng ký) */
+    p a {
+      color: #6f42c1; /* Tím */
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
+  
+  /* Footer của dialog (nút Đóng) */
+  :host mat-dialog-actions {
+    margin-top: 16px;
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  :host mat-dialog-actions button {
+    text-transform: none; /* Không in hoa toàn bộ */
+    font-weight: 500;
+    border-radius: 4px;
+    background-color: #333;
+    color: #fff;
+    margin-left: 8px;
+  }
+  
