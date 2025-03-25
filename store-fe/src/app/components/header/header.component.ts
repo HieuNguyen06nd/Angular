@@ -2,9 +2,9 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CategoryService, Category } from '../../services/category.service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { Observable, of } from 'rxjs';
-// Import component popup đã tạo (đường dẫn tùy thuộc cấu trúc project của bạn)
 import { AuthDialogComponent } from '../auth-dialog/auth-dialog.component';
+import { AuthService } from '../../services/auth.service';
+import { Observable } from 'rxjs'; // ✅ Thay vì BehaviorSubject, dùng Observable
 
 @Component({
   selector: 'app-header',
@@ -15,17 +15,29 @@ import { AuthDialogComponent } from '../auth-dialog/auth-dialog.component';
 })
 export class HeaderComponent implements OnInit {
   categories: Category[] = [];
-  isLoggedIn$!: Observable<boolean>;
-  userName$!: Observable<string>;
+  isLoggedIn$: Observable<boolean>; // ✅ Sửa kiểu dữ liệu thành Observable
+  userName$: Observable<string | null>; // ✅ Sửa kiểu dữ liệu thành Observable
 
   private categoryService = inject(CategoryService);
 
-  // Inject MatDialog để mở popup
-  constructor(private dialog: MatDialog) {}
+  constructor(private dialog: MatDialog, private authService: AuthService) {
+    // ✅ Gán giá trị trực tiếp từ AuthService
+    this.isLoggedIn$ = this.authService.isLoggedIn$;
+    this.userName$ = this.authService.userName$;
+  }
 
   ngOnInit(): void {
     this.loadCategories();
-      this.isLoggedIn$ = of(false);
+
+    this.loadCategories();
+
+    this.isLoggedIn$.subscribe((loggedIn) => {
+      console.log('🟢 isLoggedIn từ AuthService:', loggedIn);
+    });
+  
+    this.userName$.subscribe((name) => {
+      console.log('🟢 userName từ AuthService:', name);
+    });
   }
 
   loadCategories() {
@@ -34,15 +46,11 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  // Hàm mở popup đăng nhập/đăng ký
   openRegisterDialog() {
-    this.dialog.open(AuthDialogComponent, {
-      width: '400px',
-    });
+    this.dialog.open(AuthDialogComponent, { width: '400px' });
   }
 
   logout() {
-    // Hàm logout của bạn
-    console.log('Logout clicked');
+    this.authService.logout();
   }
 }

@@ -1,0 +1,85 @@
+<div class="main-content">
+    <!-- HEADER -->
+    <div class="header">
+        <h1>Product Dashboard</h1>
+        <div class="search-bar">
+            <input type="text" placeholder="Search products..." [(ngModel)]="searchQuery" (input)="filterProducts()">
+            <button><i class='bx bx-search'></i></button>
+        </div>
+    </div>
+
+    <!-- PRODUCT STATS -->
+    <div class="product-stats">
+        <div class="stat-card">
+            <h3>Total Products</h3>
+            <div class="value">{{ totalProducts }}</div>
+        </div>
+        <div class="stat-card">
+            <h3>Out of Stock</h3>
+            <div class="value">{{ outOfStockCount }}</div>
+        </div>
+        <div class="stat-card">
+            <h3>Low Stock</h3>
+            <div class="value">{{ lowStockCount }}</div>
+        </div>
+    </div>
+
+    <!-- PRODUCT TABLE -->
+    <div class="product-table">
+        <div class="table-header">
+            <h3>Product Inventory</h3>
+            <div class="table-actions">
+                <button class="btn btn-outline">
+                    <i class='bx bx-filter'></i>
+                    Filter
+                </button>
+                <button class="btn btn-primary" (click)="openAddModal()">
+                    <i class='bx bx-plus'></i>
+                    Add Product
+                </button>
+            </div>
+        </div>
+
+        <table id="productTable">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Status</th>
+                    <th>Updated</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let product of filteredProducts">
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.categoryId }}</td>
+
+                    <!-- Kiểm tra productItems trước khi truy cập phần tử đầu tiên -->
+                    <td>
+                        {{ product.productItems.length ? (product.productItems[0].price | currency:'USD':'symbol':'1.2-2') : 'N/A' }}
+                    </td>
+                    <td>
+                        {{ product.productItems.length ? product.productItems[0].stock : 'N/A' }}
+                    </td>
+                    <td>
+                        <span [class]="'status status-' + (product.productItems.length ? getStockStatus(product.productItems[0].stock).class : 'unknown')">
+                            {{ product.productItems.length ? getStockStatus(product.productItems[0].stock).text : 'Unknown' }}
+                        </span>
+                    </td>
+                    <td>{{ product.updatedAt | date:'short' }}</td>
+                    <td>
+                        <button class="action-btn edit-btn" (click)="editProduct(product.id)">
+                            <i class='bx bx-edit'></i>
+                        </button>
+                        <button class="action-btn delete-btn" (click)="deleteProduct(product.id)">
+                            <i class='bx bx-trash'></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

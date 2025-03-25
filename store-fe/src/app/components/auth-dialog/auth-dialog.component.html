@@ -4,11 +4,38 @@
 
 <mat-dialog-content class="mat-typography">
   <form [formGroup]="isLogin ? loginForm : signupForm" (ngSubmit)="onSubmit()">
+    <!-- Hiển thị thông báo lỗi -->
+    <div *ngIf="errorMessage" style="color: #f44336; margin-bottom: 10px;">
+      {{ errorMessage }}
+    </div>
+    <!-- Hiển thị thông báo thành công -->
+    <div *ngIf="successMessage" style="color: #4caf50; margin-bottom: 10px;">
+      {{ successMessage }}
+    </div>
+
+    <!-- Form Đăng nhập -->
     <ng-container *ngIf="isLogin; else signupTemplate">
-      <!-- Nội dung form đăng nhập -->
-      <!-- ... -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email hoặc Số điện thoại</mat-label>
+        <input matInput formControlName="identifier" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Mật khẩu</mat-label>
+        <input matInput type="password" formControlName="password" />
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit">
+        Đăng nhập
+      </button>
+
+      <p style="margin-top: 10px;">
+        Bạn chưa có tài khoản?
+        <a style="cursor: pointer; color: #007bff;" (click)="toggleForm()">Đăng ký</a>
+      </p>
     </ng-container>
 
+    <!-- Form Đăng ký -->
     <ng-template #signupTemplate>
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Họ và Tên</mat-label>

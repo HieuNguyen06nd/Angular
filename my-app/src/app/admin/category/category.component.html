@@ -1,0 +1,106 @@
+<div class="admin-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <i class='bx bxs-store'></i>
+            <span>AdminHub</span>
+        </div>
+        
+        <ul class="sidebar-menu">
+            <li><a href="#"><i class='bx bxs-dashboard'></i><span>Dashboard</span></a></li>
+            <li><a href="#"><i class='bx bxs-store-alt'></i><span>My Store</span></a></li>
+            <li><a href="#"><i class='bx bxs-receipt'></i><span>Order</span></a></li>
+            <li class="active"><a href="#"><i class='bx bxs-category'></i><span>Category</span></a></li>
+            <li><a href="#"><i class='bx bxs-package'></i><span>Product</span></a></li>
+            <li><a href="#"><i class='bx bxs-user'></i><span>User</span></a></li>
+            <li><a href="#"><i class='bx bxs-cog'></i><span>Settings</span></a></li>
+            <li><a href="#"><i class='bx bxs-log-out'></i><span>Logout</span></a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <div class="header">
+            <h1>Category Management</h1>
+            <div class="search-bar">
+                <input type="text" placeholder="Search categories..." [(ngModel)]="searchQuery" name="searchQuery">
+                <button><i class='bx bx-search'></i></button>
+            </div>
+        </div>
+        
+        <!-- Stats Cards -->
+        <div class="stats-section">
+            <div class="stat-card">
+                <h3>Total Categories</h3>
+                <div class="stat-value">{{categories.length}}</div>
+            </div>
+            <div class="stat-card">
+                <h3>Top Level</h3>
+                <div class="stat-value">{{rootCategories.length}}</div>
+            </div>
+            <div class="stat-card">
+                <h3>Active</h3>
+                <div class="stat-value">{{activeCategories}}</div>
+            </div>
+        </div>
+        
+        <!-- Category Tree Section -->
+        <div class="tree-section">
+            <div class="section-header">
+                <h2 class="section-title">Category Hierarchy</h2>
+                <div class="tree-actions">
+                    <button class="btn btn-outline" (click)="expandAll()">
+                        <i class='bx bx-expand'></i>
+                        <span>Expand All</span>
+                    </button>
+                    <button class="btn btn-outline" (click)="collapseAll()">
+                        <i class='bx bx-collapse'></i>
+                        <span>Collapse All</span>
+                    </button>
+                </div>
+            </div>
+            
+            <ul class="category-tree">
+                <li class="category-item">
+                    <div class="category-header">
+                        <span class="category-name">
+                            <i class='bx bxs-category category-icon'></i>
+                            Legend All
+                        </span>
+                        <div>
+                            <span class="status-badge status-active">Active</span>
+                            <div class="category-actions">
+                                <button class="action-btn edit-btn"><i class='bx bx-edit'></i></button>
+                                <button class="action-btn delete-btn"><i class='bx bx-trash'></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <ul class="subcategory-list">
+                        <li class="subcategory-item">
+                            <div class="category-header">
+                                <span class="category-name">
+                                    <i class='bx bx-category category-icon'></i>
+                                    Number
+                                </span>
+                                <div>
+                                    <span class="status-badge status-inactive">Inactive</span>
+                                    <div class="category-actions">
+                                        <button class="action-btn edit-btn"><i class='bx bx-edit'></i></button>
+                                        <button class="action-btn delete-btn"><i class='bx bx-trash'></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            
+            <button class="btn btn-primary add-category-btn">
+                <i class='bx bx-plus'></i>
+                <span>Add Category</span>
+            </button>
+        </div>
+    </div>
+</div>

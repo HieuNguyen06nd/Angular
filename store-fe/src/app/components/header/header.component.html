@@ -11,9 +11,17 @@
                 </div>
                 <div class="right">
                     <ul class="flexitem main-links">
-                        <li>
+                        <li *ngIf="!(isLoggedIn$ | async)">
                             <a (click)="openRegisterDialog()" style="cursor: pointer;">Sign up</a>
                         </li>
+                        
+                        <li *ngIf="isLoggedIn$ | async">
+                            <span>Xin chào, {{ (userName$ | async) || 'User' }}</span>
+                            <a (click)="logout()" style="cursor: pointer;">Logout</a>
+                        </li>
+
+                          <p>Debug: isLoggedIn = {{ isLoggedIn$ | async }}</p>
+                        <p>Debug: userName = {{ userName$ | async }}</p>
                           
                         <li><a href="#">My Account</a></li>
                         <li><a href="#">Order Tracking</a></li>
