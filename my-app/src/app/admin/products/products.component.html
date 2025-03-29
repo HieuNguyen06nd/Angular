@@ -1,85 +1,270 @@
 <div class="main-content">
-    <!-- HEADER -->
-    <div class="header">
-        <h1>Product Dashboard</h1>
-        <div class="search-bar">
-            <input type="text" placeholder="Search products..." [(ngModel)]="searchQuery" (input)="filterProducts()">
-            <button><i class='bx bx-search'></i></button>
-        </div>
+  <div class="header">
+    <h1>Product Dashboard</h1>
+    <div class="search-bar">
+      <input type="text" placeholder="Search products..." [(ngModel)]="searchQuery" (input)="filterProducts()" />
+      <button><i class='bx bx-search'></i></button>
+    </div>
+  </div>
+
+  <div class="product-stats">
+    <div class="stat-card">
+      <h3>Total Products</h3>
+      <div class="value">{{ totalProducts }}</div>
+    </div>
+    <div class="stat-card">
+      <h3>Out of Stock</h3>
+      <div class="value">{{ outOfStockCount }}</div>
+    </div>
+    <div class="stat-card">
+      <h3>Low Stock</h3>
+      <div class="value">{{ lowStockCount }}</div>
+    </div>
+  </div>
+
+  <div class="product-table">
+    <div class="table-header">
+      <h3>Product Inventory</h3>
+      <div class="table-actions">
+        <button class="btn btn-outline">
+          <i class='bx bx-filter'></i>
+          Filter
+        </button>
+        <button class="btn btn-primary" (click)="openAddModal()">
+          <i class='bx bx-plus'></i>
+          Add Product
+        </button>
+      </div>
     </div>
 
-    <!-- PRODUCT STATS -->
-    <div class="product-stats">
-        <div class="stat-card">
-            <h3>Total Products</h3>
-            <div class="value">{{ totalProducts }}</div>
-        </div>
-        <div class="stat-card">
-            <h3>Out of Stock</h3>
-            <div class="value">{{ outOfStockCount }}</div>
-        </div>
-        <div class="stat-card">
-            <h3>Low Stock</h3>
-            <div class="value">{{ lowStockCount }}</div>
-        </div>
-    </div>
-
-    <!-- PRODUCT TABLE -->
-    <div class="product-table">
-        <div class="table-header">
-            <h3>Product Inventory</h3>
-            <div class="table-actions">
-                <button class="btn btn-outline">
-                    <i class='bx bx-filter'></i>
-                    Filter
-                </button>
-                <button class="btn btn-primary" (click)="openAddModal()">
-                    <i class='bx bx-plus'></i>
-                    Add Product
-                </button>
-            </div>
-        </div>
-
-        <table id="productTable">
-            <thead>
-                <tr>
-                    <th>Product Name</th>
-                    <th>Category</th>
-                    <th>Price</th>
-                    <th>Stock</th>
-                    <th>Status</th>
-                    <th>Updated</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let product of filteredProducts">
-                    <td>{{ product.name }}</td>
-                    <td>{{ product.categoryId }}</td>
-
-                    <!-- Kiểm tra productItems trước khi truy cập phần tử đầu tiên -->
-                    <td>
-                        {{ product.productItems.length ? (product.productItems[0].price | currency:'USD':'symbol':'1.2-2') : 'N/A' }}
-                    </td>
-                    <td>
-                        {{ product.productItems.length ? product.productItems[0].stock : 'N/A' }}
-                    </td>
-                    <td>
-                        <span [class]="'status status-' + (product.productItems.length ? getStockStatus(product.productItems[0].stock).class : 'unknown')">
-                            {{ product.productItems.length ? getStockStatus(product.productItems[0].stock).text : 'Unknown' }}
-                        </span>
-                    </td>
-                    <td>{{ product.updatedAt | date:'short' }}</td>
-                    <td>
-                        <button class="action-btn edit-btn" (click)="editProduct(product.id)">
-                            <i class='bx bx-edit'></i>
-                        </button>
-                        <button class="action-btn delete-btn" (click)="deleteProduct(product.id)">
-                            <i class='bx bx-trash'></i>
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <table id="productTable">
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Product Name</th>
+          <th>Description</th>
+          <th>Category</th>
+          <th>Price</th>
+          <th>Stock</th>
+          <th>Color</th>
+          <th>Size</th>
+          <th>Material</th>
+          <th>Status</th>
+          <th>Updated</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of filteredProducts">
+          <td>
+            <img *ngIf="product.images?.length"
+              [src]="getMainImage(product.images || [])"
+              class="product-image"
+              alt="{{ product.name }}">
+            <span *ngIf="!product.images?.length">No image</span>
+          </td>
+          <td>{{ product.name }}</td>
+          <td>{{ product.description }}</td>
+          <td>{{ product.categoryName }}</td>
+          <td *ngIf="product.productItems.length > 0; else noProductItem">
+            {{ product.productItems[0].price | currency:'VND':'symbol':'1.0-0' }}
+          </td>
+          <td *ngIf="product.productItems.length > 0; else noProductItem">
+            {{ product.productItems[0].stock || 'N/A' }}
+          </td>
+          <td *ngIf="product.productItems.length > 0; else noProductItem">
+            {{ product.productItems[0].colorName || 'N/A' }}
+          </td>
+          <td *ngIf="product.productItems.length > 0; else noProductItem">
+            {{ product.productItems[0].sizeName || 'N/A' }}
+          </td>
+          <td *ngIf="product.productItems.length > 0; else noProductItem">
+            {{ product.productItems[0].materialName || 'N/A' }}
+          </td>
+          
+          <!-- Định nghĩa else template nếu productItems rỗng -->
+          <ng-template #noProductItem>
+            <td colspan="5">Không có thông tin sản phẩm</td>
+          </ng-template>
+          
+          <td>
+            <span *ngIf="product.productItems[0]?.stock !== undefined"
+                  [class]="'status status-' + getStockStatus(product.productItems[0].stock).class">
+              {{ getStockStatus(product.productItems[0].stock).text }}
+            </span>
+            <span *ngIf="product.productItems[0]?.stock === undefined">N/A</span>
+          </td>
+          <td>{{ product.updatedAt | date:'short' }}</td>
+          <td>
+            <button class="action-btn edit-btn" (click)="openEditModal(product)">
+              <i class='bx bx-edit'></i>
+            </button>
+            <button class="action-btn delete-btn" (click)="deleteProduct(product.id)">
+              <i class='bx bx-trash'></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
+
+<!-- Add/Edit Product Modal -->
+<div class="modal" [class.show]="showModal">
+  <div class="modal-overlay" (click)="closeModal()"></div>
+  <div class="modal-content">
+    <span class="close" (click)="closeModal()">&times;</span>
+    <h2>{{ isEditMode ? 'CẬP NHẬT SẢN PHẨM' : 'THÊM SẢN PHẨM MỚI' }}</h2>
+    
+    <form [formGroup]="productForm" (ngSubmit)="submitForm()">
+      <!-- Row 1: Tên sản phẩm, Danh mục, Thương hiệu -->
+      <div class="form-row">
+        <div class="form-group">
+          <label>Tên sản phẩm <span class="required">*</span></label>
+          <input type="text" formControlName="name" required />
+          <div class="error-message" *ngIf="productForm.get('name')?.errors?.['required'] && productForm.get('name')?.touched">
+            Vui lòng nhập tên sản phẩm
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Danh mục <span class="required">*</span></label>
+          <select formControlName="categoryId" required>
+            <option value="">Chọn danh mục</option>
+            <option *ngFor="let category of categories" [value]="category.id">
+              {{ category.name }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Thương hiệu <span class="required">*</span></label>
+          <select formControlName="brandId" required>
+            <option value="">Chọn thương hiệu</option>
+            <option *ngFor="let brand of brands" [value]="brand.id">
+              {{ brand.name }}
+            </option>
+          </select>        
+        </div>
+      </div>
+      
+      <!-- Row 2: Mô tả -->
+      <div class="form-group">
+        <label>Mô tả</label>
+        <textarea formControlName="description" rows="3"></textarea>
+      </div>
+      
+      <!-- Row 3: Giá & Số lượng -->
+      <div class="form-row">
+        <div class="form-group">
+          <label>Giá <span class="required">*</span></label>
+          <input type="number" formControlName="price" min="0" required />
+        </div>
+        <div class="form-group">
+          <label>Số lượng <span class="required">*</span></label>
+          <input type="number" formControlName="stock" min="0" required />
+        </div>
+      </div>
+      
+      <!-- Row 4: Chọn thuộc tính (màu, kích thước, chất liệu) -->
+      <div class="form-row">
+        <div class="form-group">
+          <label>Màu sắc</label>
+          <select formControlName="colorId" required>
+            <option value="">Chọn màu</option>
+            <option *ngFor="let color of colorOptions" [value]="color.id">
+              {{ color.name }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Kích thước</label>
+          <select formControlName="sizeId" required>
+            <option value="">Chọn kích thước</option>
+            <option *ngFor="let size of sizeOptions" [value]="size.id">
+              {{ size.name }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Chất liệu</label>
+          <select formControlName="materialId" required>
+            <option value="">Chọn chất liệu</option>
+            <option *ngFor="let material of materialOptions" [value]="material.id">
+              {{ material.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+      
+      <!-- Row 5: Hình ảnh sản phẩm -->
+      <div class="form-group">
+        <label>Hình ảnh sản phẩm</label>
+        <div class="image-upload-container">
+          <div class="image-preview-grid">
+            <div class="image-preview-item" 
+                 *ngFor="let image of imagePreviews; let i = index" 
+                 [class.main-image]="image.isMain">
+              <img [src]="image.url" alt="Product image" />
+              <div class="image-actions">
+                <button type="button" class="action-btn set-main-btn" 
+                        (click)="setMainImage(i)" title="Đặt làm ảnh chính">
+                  <i class='bx bx-star'></i>
+                </button>
+                <button type="button" class="action-btn remove-btn" 
+                        (click)="removeImage(i)" title="Xóa ảnh">
+                  <i class='bx bx-trash'></i>
+                </button>
+              </div>
+              <div class="main-badge" *ngIf="image.isMain">Ảnh chính</div>
+            </div>
+            <label class="upload-area">
+              <input type="file" multiple (change)="onFileSelected($event)" accept="image/*" />
+              <div class="upload-content">
+                <i class='bx bx-cloud-upload'></i>
+                <span>Tải lên hình ảnh</span>
+              </div>
+            </label>
+          </div>
+          <div class="upload-note">Tối đa 10 ảnh, kích thước mỗi ảnh không quá 2MB</div>
+        </div>
+      </div>
+      
+      <!-- Form actions -->
+      <div class="form-actions">
+        <button type="button" class="btn btn-outline" (click)="closeModal()">Hủy bỏ</button>
+        <button type="submit" class="btn btn-primary" [disabled]="productForm.invalid">
+          {{ isEditMode ? 'Cập nhật' : 'Thêm mới' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Image Gallery Modal -->
+<div class="gallery-modal" [class.show]="showGallery">
+  <div class="gallery-overlay" (click)="closeGallery()"></div>
+  <div class="gallery-content">
+    <span class="close" (click)="closeGallery()">&times;</span>
+    <h3>Hình ảnh sản phẩm</h3>
+    <div class="gallery-container">
+      <div class="gallery-item" *ngFor="let image of galleryImages; let i = index">
+        <img [src]="image" [alt]="'Product image ' + (i + 1)" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="confirm-modal" [class.show]="showDeleteConfirm">
+  <div class="confirm-content">
+    <div class="confirm-icon">
+      <i class='bx bx-error-circle'></i>
+    </div>
+    <h3>Xác nhận xóa</h3>
+    <p>Bạn có chắc chắn muốn xóa sản phẩm này?</p>
+    <div class="confirm-actions">
+      <button class="btn btn-outline" (click)="cancelDelete()">Hủy</button>
+      <button class="btn btn-danger" (click)="deleteProduct(productToDelete!)">Xóa</button>
+    </div>
+  </div>
+</div>
+

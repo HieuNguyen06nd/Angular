@@ -1,106 +1,231 @@
 <div class="admin-container">
     <!-- Sidebar -->
     <div class="sidebar">
-        <div class="sidebar-brand">
-            <i class='bx bxs-store'></i>
-            <span>AdminHub</span>
-        </div>
-        
-        <ul class="sidebar-menu">
-            <li><a href="#"><i class='bx bxs-dashboard'></i><span>Dashboard</span></a></li>
-            <li><a href="#"><i class='bx bxs-store-alt'></i><span>My Store</span></a></li>
-            <li><a href="#"><i class='bx bxs-receipt'></i><span>Order</span></a></li>
-            <li class="active"><a href="#"><i class='bx bxs-category'></i><span>Category</span></a></li>
-            <li><a href="#"><i class='bx bxs-package'></i><span>Product</span></a></li>
-            <li><a href="#"><i class='bx bxs-user'></i><span>User</span></a></li>
-            <li><a href="#"><i class='bx bxs-cog'></i><span>Settings</span></a></li>
-            <li><a href="#"><i class='bx bxs-log-out'></i><span>Logout</span></a></li>
-        </ul>
+      <div class="sidebar-brand">
+        <i class='bx bxs-store'></i>
+        <span>AdminHub</span>
+      </div>
+      
+      <ul class="sidebar-menu">
+        <li><a href="#"><i class='bx bxs-dashboard'></i><span>Dashboard</span></a></li>
+        <li><a href="#"><i class='bx bxs-store-alt'></i><span>My Store</span></a></li>
+        <li><a href="#"><i class='bx bxs-receipt'></i><span>Order</span></a></li>
+        <li class="active"><a href="#"><i class='bx bxs-category'></i><span>Category</span></a></li>
+        <li><a href="#"><i class='bx bxs-package'></i><span>Product</span></a></li>
+        <li><a href="#"><i class='bx bxs-user'></i><span>User</span></a></li>
+        <li><a href="#"><i class='bx bxs-cog'></i><span>Settings</span></a></li>
+        <li><a href="#"><i class='bx bxs-log-out'></i><span>Logout</span></a></li>
+      </ul>
     </div>
-
+  
     <!-- Main Content -->
     <div class="main-content">
-        <!-- Header -->
-        <div class="header">
-            <h1>Category Management</h1>
-            <div class="search-bar">
-                <input type="text" placeholder="Search categories..." [(ngModel)]="searchQuery" name="searchQuery">
-                <button><i class='bx bx-search'></i></button>
-            </div>
+      <!-- Header -->
+      <div class="header">
+        <h1>Category Management</h1>
+        <div class="search-bar">
+          <input type="text" placeholder="Search categories..." [(ngModel)]="searchQuery" name="searchQuery">
+          <button><i class='bx bx-search'></i></button>
         </div>
-        
-        <!-- Stats Cards -->
-        <div class="stats-section">
-            <div class="stat-card">
-                <h3>Total Categories</h3>
-                <div class="stat-value">{{categories.length}}</div>
-            </div>
-            <div class="stat-card">
-                <h3>Top Level</h3>
-                <div class="stat-value">{{rootCategories.length}}</div>
-            </div>
-            <div class="stat-card">
-                <h3>Active</h3>
-                <div class="stat-value">{{activeCategories}}</div>
-            </div>
+      </div>
+      
+      <!-- Stats Cards -->
+      <div class="stats-section">
+        <div class="stat-card">
+          <h3>Total Categories</h3>
+          <div class="stat-value">{{ categories.length }}</div>
         </div>
-        
-        <!-- Category Tree Section -->
-        <div class="tree-section">
-            <div class="section-header">
-                <h2 class="section-title">Category Hierarchy</h2>
-                <div class="tree-actions">
-                    <button class="btn btn-outline" (click)="expandAll()">
-                        <i class='bx bx-expand'></i>
-                        <span>Expand All</span>
-                    </button>
-                    <button class="btn btn-outline" (click)="collapseAll()">
-                        <i class='bx bx-collapse'></i>
-                        <span>Collapse All</span>
-                    </button>
-                </div>
-            </div>
-            
-            <ul class="category-tree">
-                <li class="category-item">
-                    <div class="category-header">
-                        <span class="category-name">
-                            <i class='bx bxs-category category-icon'></i>
-                            Legend All
-                        </span>
-                        <div>
-                            <span class="status-badge status-active">Active</span>
-                            <div class="category-actions">
-                                <button class="action-btn edit-btn"><i class='bx bx-edit'></i></button>
-                                <button class="action-btn delete-btn"><i class='bx bx-trash'></i></button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <ul class="subcategory-list">
-                        <li class="subcategory-item">
-                            <div class="category-header">
-                                <span class="category-name">
-                                    <i class='bx bx-category category-icon'></i>
-                                    Number
-                                </span>
-                                <div>
-                                    <span class="status-badge status-inactive">Inactive</span>
-                                    <div class="category-actions">
-                                        <button class="action-btn edit-btn"><i class='bx bx-edit'></i></button>
-                                        <button class="action-btn delete-btn"><i class='bx bx-trash'></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-            
-            <button class="btn btn-primary add-category-btn">
-                <i class='bx bx-plus'></i>
-                <span>Add Category</span>
+        <div class="stat-card">
+          <h3>Top Level</h3>
+          <div class="stat-value">{{ rootCategories.length }}</div>
+        </div>
+        <div class="stat-card">
+          <h3>Active</h3>
+          <div class="stat-value">{{ activeCategories }}</div>
+        </div>
+      </div>
+      
+      <!-- Category Tree Section -->
+      <div class="tree-section">
+        <div class="section-header">
+          <h2 class="section-title">Category Hierarchy</h2>
+          <div class="tree-actions">
+            <button class="btn btn-outline" (click)="expandAll()">
+              <i class='bx bx-expand'></i>
+              <span>Expand All</span>
             </button>
+            <button class="btn btn-outline" (click)="collapseAll()">
+              <i class='bx bx-collapse'></i>
+              <span>Collapse All</span>
+            </button>
+          </div>
         </div>
+        
+        <ul class="category-tree">
+          <li *ngFor="let category of categories" class="category-item" [class.expanded]="isExpanded(category.id)">
+            <div class="category-header">
+              <span class="category-name" (click)="toggleExpand(category.id)">
+                <i class='bx bxs-category category-icon'></i>
+                {{ category.name }}
+                <i class='bx bx-chevron-right expand-icon' [class.rotated]="isExpanded(category.id)"></i>
+              </span>
+              <div class="category-actions">
+                <button class="action-btn edit-btn" (click)="openEditForm(category); $event.stopPropagation()">
+                  <i class='bx bx-edit'></i>
+                </button>
+                <button class="action-btn delete-btn" (click)="confirmDelete(category); $event.stopPropagation()">
+                  <i class='bx bx-trash'></i>
+                </button>
+              </div>
+            </div>
+            
+            <!-- Sử dụng children thay cho subcategories -->
+            <ul *ngIf="category.children?.length" class="subcategory-list" [class.show]="isExpanded(category.id)">
+              <li *ngFor="let subcategory of category.children" class="subcategory-item">
+                <div class="category-header">
+                  <span class="category-name">
+                    <i class='bx bx-category category-icon'></i>
+                    {{ subcategory.name }}
+                  </span>
+                  <div class="category-actions">
+                    <button class="action-btn edit-btn" (click)="openEditForm(subcategory)">
+                      <i class='bx bx-edit'></i>
+                    </button>
+                    <button class="action-btn delete-btn" (click)="confirmDelete(subcategory)">
+                      <i class='bx bx-trash'></i>
+                    </button>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        
+        <button class="btn btn-primary add-category-btn" (click)="openAddForm()">
+          <i class='bx bx-plus'></i>
+          <span>Add Category</span>
+        </button>
+      </div>
     </div>
-</div>
+    
+    <!-- Add Category Modal -->
+    <div class="modal" *ngIf="showAddModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Add New Category</h3>
+          <button class="close-btn" (click)="closeAddForm()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="addForm" (ngSubmit)="submitAddForm()">
+            <div class="form-group">
+              <label for="add-name">Category Name</label>
+              <input type="text" id="add-name" formControlName="name" placeholder="Enter category name">
+              <div *ngIf="addForm.get('name')?.invalid && addForm.get('name')?.touched" class="error-message">
+                Category name is required
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="add-parent">Parent Category</label>
+              <select id="add-parent" formControlName="parentId">
+                <option value="">-- Select Parent --</option>
+                <option *ngFor="let cat of availableParentCategories" [value]="cat.id">
+                  {{ cat.name }}
+                </option>
+              </select>
+            </div>
+            
+            <!-- Nếu bạn có thuộc tính active trong dữ liệu, thêm phần này; nếu không, có thể bỏ qua -->
+            <div class="form-group">
+              <label for="add-status">Status</label>
+              <select id="add-status" formControlName="active">
+                <option [value]="true">Active</option>
+                <option [value]="false">Inactive</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="add-description">Description</label>
+              <textarea id="add-description" formControlName="description" placeholder="Enter category description"></textarea>
+            </div>
+            
+            <div class="form-actions">
+              <button type="button" class="btn btn-outline" (click)="closeAddForm()">Cancel</button>
+              <button type="submit" class="btn btn-primary" [disabled]="addForm.invalid">Save</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Edit Category Modal -->
+    <div class="modal" *ngIf="showEditModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Edit Category</h3>
+          <button class="close-btn" (click)="closeEditForm()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="editForm" (ngSubmit)="submitEditForm()">
+            <div class="form-group">
+              <label for="edit-name">Category Name</label>
+              <input type="text" id="edit-name" formControlName="name" placeholder="Enter category name">
+              <div *ngIf="editForm.get('name')?.invalid && editForm.get('name')?.touched" class="error-message">
+                Category name is required
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="edit-parent">Parent Category</label>
+              <select id="edit-parent" formControlName="parentId" [disabled]="!canChangeParent">
+                <option value="">-- Select Parent --</option>
+                <option *ngFor="let cat of availableParentCategories" [value]="cat.id">
+                  {{ cat.name }}
+                </option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="edit-status">Status</label>
+              <select id="edit-status" formControlName="active">
+                <option [value]="true">Active</option>
+                <option [value]="false">Inactive</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="edit-description">Description</label>
+              <textarea id="edit-description" formControlName="description" placeholder="Enter category description"></textarea>
+            </div>
+            
+            <div class="form-actions">
+              <button type="button" class="btn btn-outline" (click)="closeEditForm()">Cancel</button>
+              <button type="submit" class="btn btn-primary" [disabled]="editForm.invalid">Save Changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Delete Confirmation Modal -->
+    <div class="modal" *ngIf="showDeleteModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Confirm Deletion</h3>
+          <button class="close-btn" (click)="closeDeleteModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to delete the category "{{ categoryToDelete?.name }}"?</p>
+          <!-- Nếu không có active hoặc children thì cập nhật lại nội dung cảnh báo -->
+          <p *ngIf="categoryToDelete?.children?.length" class="warning-text">
+            Warning: This category has {{ categoryToDelete?.children?.length }} subcategories that will also be deleted!
+          </p>
+          <div class="form-actions">
+            <button type="button" class="btn btn-outline" (click)="closeDeleteModal()">Cancel</button>
+            <button type="button" class="btn btn-danger" (click)="confirmDeleteAction()">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

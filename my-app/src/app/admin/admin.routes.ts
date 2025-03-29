@@ -12,11 +12,19 @@ export const adminRoutes: Routes = [
       },
       { 
         path: 'products',
-        loadComponent: () =>import('./products/products.component').then(m => m.ProductsComponent)
+        loadComponent: () =>import('./products/products.component').then(m => m.ProductComponent)
       },
       { 
         path: 'categories',
         loadComponent: () =>import('./category/category.component').then(m => m.CategoryComponent)
+      },
+      { 
+        path: 'brands',
+        loadComponent: () =>import('./brand/brand.component').then(m => m.BrandComponent)
+      },
+      { 
+        path: 'orders',
+        loadComponent: () =>import('./orders/orders.component').then(m => m.OrdersComponent)
       }
     ]
   }

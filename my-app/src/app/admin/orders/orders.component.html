@@ -1,0 +1,92 @@
+<div class="order-admin">
+    <h1>Order Admin</h1>
+    
+    <div class="order-management">
+        <h2>Order Management</h2>
+        
+        <div class="dateboard">
+            <div class="order-stats">
+                <div class="stat-card">
+                    <h3>Total Orders</h3>
+                    <p>1,245</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Pending Orders</h3>
+                    <p>85</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Processing</h3>
+                    <p>320</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Completed</h3>
+                    <p>840</p>
+                </div>
+            </div>
+            
+            <div class="order-list">
+                <h3>Order List</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Date</th>
+                            <th>Items</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Payment</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#OBD-1001</td>
+                            <td>John Doe</td>
+                            <td>2023-06-15 14:30</td>
+                            <td>3</td>
+                            <td>$245.99</td>
+                            <td><span class="status finding">FINDING</span></td>
+                            <td><span class="payment brand">BRAND</span></td>
+                            <td>
+                                <button class="action-btn">💶</button>
+                                <button class="action-btn">💷</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#OBD-1002</td>
+                            <td>Jane Smith</td>
+                            <td>2023-06-14 09:15</td>
+                            <td>1</td>
+                            <td>$89.50</td>
+                            <td><span class="status processing">PROCESSING</span></td>
+                            <td><span class="payment ind">IND</span></td>
+                            <td>
+                                <button class="action-btn">💶</button>
+                                <button class="action-btn">💷</button>
+                            </td>
+                        </tr>
+                        <!-- More rows would go here -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="recent-activity">
+                <h3>Recent Activity</h3>
+                <div class="activity-item">
+                    <p><strong>Order #OBD-1001 created</strong></p>
+                    <p class="activity-date">2023-06-13 18:30</p>
+                </div>
+                <div class="activity-item">
+                    <p><strong>Order #OBD-1003 completed</strong></p>
+                    <p class="activity-date">2023-06-12 09:45</p>
+                </div>
+                <div class="activity-item">
+                    <p><strong>Order #OBD-1004 cancelled</strong></p>
+                    <p>Customer requested cancellation</p>
+                    <p class="activity-date">2023-06-01 11:20</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
