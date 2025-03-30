@@ -1,0 +1,17 @@
+<!-- projects/admin/src/app/layout/layout.component.html -->
+<div class="admin-container" [class.sidebar-collapsed]="isSidebarCollapsed">
+    <app-sidebar [collapsed]="isSidebarCollapsed"></app-sidebar>
+    
+    <div class="main-content">
+      <header class="admin-header">
+        <button (click)="toggleSidebar()">
+          <i class="toggle-icon"></i>
+        </button>
+        <h2>Admin Panel</h2>
+      </header>
+      
+      <div class="content-wrapper">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>

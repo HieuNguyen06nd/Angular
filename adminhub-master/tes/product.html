@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Brand Management</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- SIDEBAR -->
+	<section id="sidebar">
+		<a href="#" class="brand">
+			<i class='bx bxs-smile'></i>
+			<span class="text">AdminHub</span>
+		</a>
+		<ul class="side-menu top">
+			<li class="active">
+				<a href="#">
+					<i class='bx bxs-dashboard' ></i>
+					<span class="text">Dashboard</span>
+				</a>
+			</li>
+			<li>
+				<a href="#">
+					<i class='bx bxs-shopping-bag-alt' ></i>
+					<span class="text">Orders</span>
+				</a>
+			</li>
+			<li>
+				<a href="#">
+					<i class='bx bxs-doughnut-chart' ></i>
+					<span class="text">Products</span>
+				</a>
+			</li>
+			<li>
+				<a href="#">
+					<i class='bx bxs-message-dots' ></i>
+					<span class="text">Category</span>
+				</a>
+			</li>
+			<li>
+				<a href="#">
+					<i class='bx bxs-message-dots' ></i>
+					<span class="text">Brand</span>
+				</a>
+			</li>
+			<li>
+				<a href="#">
+					<i class='bx bxs-message-dots' ></i>
+					<span class="text">Color</span>
+				</a>
+			</li>
+			<li>
+				<a href="#">
+					<i class='bx bxs-message-dots' ></i>
+					<span class="text">Size</span>
+				</a>
+			</li>
+			<li>
+				<a href="#">
+					<i class='bx bxs-message-dots' ></i>
+					<span class="text">Chất Liệu</span>
+				</a>
+			</li>
+			<li>
+				<a href="#">
+					<i class='bx bxs-group' ></i>
+					<span class="text">Users</span>
+				</a>
+			</li>
+		</ul>
+		<ul class="side-menu">
+			<li>
+				<a href="#">
+					<i class='bx bxs-cog' ></i>
+					<span class="text">Settings</span>
+				</a>
+			</li>
+			<li>
+				<a href="#" class="logout">
+					<i class='bx bxs-log-out-circle' ></i>
+					<span class="text">Logout</span>
+				</a>
+			</li>
+		</ul>
+	</section>
+	<!-- SIDEBAR -->
+    <section id="content">
+        <div class="container">
+            <main class="content">
+              <!-- Header -->
+              <div class="page-header">
+                <h1>Product Management</h1>
+              </div>
+        
+              <!-- Stats Row -->
+              <div class="stats-grid">
+                <div class="card">
+                  <h3>2,856</h3>
+                  <p>Total Products</p>
+                </div>
+                <div class="card">
+                  <h3>1,403</h3>
+                  <p>In Stock</p>
+                </div>
+                <div class="card">
+                  <h3>245</h3>
+                  <p>Low Stock</p>
+                </div>
+                <div class="card">
+                  <h3>58</h3>
+                  <p>New This Week</p>
+                </div>
+              </div>
+        
+              <!-- Product List Table -->
+              <div class="table-container">
+                <div class="table-header">
+                  <h4>Product List</h4>
+                  <div class="table-actions">
+                    <button class="btn btn-primary">Add Product</button>
+                    <button class="btn btn-success">Export CSV</button>
+                  </div>
+                </div>
+                
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Product Name</th>
+                      <th>Category</th>
+                      <th>Price</th>
+                      <th>Stock</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Air Jordan 1 Retro</td>
+                      <td>Shoes</td>
+                      <td>$150</td>
+                      <td>45</td>
+                      <td><span class="status-badge status-active">In Stock</span></td>
+                      <td>
+                        <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                        <button class="btn-icon"><i class="fas fa-trash"></i></button>
+                      </td>
+                    </tr>
+                    <!-- Thêm các hàng khác -->
+                  </tbody>
+                </table>
+              </div>
+            </main>
+          </div>
+        
+    </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
