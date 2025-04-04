@@ -1,1 +1,223 @@
-<p>brands works!</p>
+<section id="content">
+    <!-- NAVBAR -->
+    <nav>
+        <i class='bx bx-menu' ></i>
+        <a href="#" class="nav-link">Categories</a>
+        <form action="#">
+            <div class="form-input">
+                <input type="search" placeholder="Search...">
+                <button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
+            </div>
+        </form>
+        <input type="checkbox" id="switch-mode" hidden>
+        <label for="switch-mode" class="switch-mode"></label>
+        <a href="#" class="notification">
+            <i class='bx bxs-bell' ></i>
+            <span class="num">8</span>
+        </a>
+        <a href="#" class="profile">
+            <img src="img/people.png">
+        </a>
+    </nav>
+    <!-- NAVBAR -->
+
+  <!-- MAIN -->
+  <main>
+    <div class="head-title">
+      <div class="left">
+        <h1>BrandAdmin</h1>
+        <ul class="breadcrumb">
+          <li>
+            <a href="#">Brand Management</a>
+          </li>
+          <li><i class='bx bx-chevron-right'></i></li>
+          <li>
+            <a class="active" href="#">Brands</a>
+          </li>
+        </ul>
+      </div>
+      <a href="#" class="btn-download">
+        <i class='bx bxs-cloud-download'></i>
+        <span class="text">Download PDF</span>
+      </a>
+    </div>
+
+    <div class="table-data">
+      <div class="brand-list">
+        <div class="head">
+          <h3>Brand List</h3>
+          <div class="actions">
+            <button class="btn-add" (click)="openAddModal()">
+              <i class='bx bx-plus'></i>
+              <span>Add Brand</span>
+            </button>
+          </div>
+        </div>
+        
+        <!-- Loading indicator -->
+        <div *ngIf="isLoading" class="loading-indicator">
+          <i class='bx bx-loader-circle bx-spin'></i> Loading brands...
+        </div>
+        
+        <table *ngIf="!isLoading">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Image</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let brand of filteredBrands">
+              <td>{{ brand.name }}</td>
+              <td>{{ brand.description || '-' }}</td>
+              <td>
+                <img *ngIf="brand.logoUrl" [src]="brand.logoUrl" alt="Brand Logo" class="brand-logo" />
+                <span *ngIf="!brand.logoUrl" class="no-image">No image</span>
+              </td>
+              <td>
+                <label class="switch">
+                  <input type="checkbox" [checked]="brand.status" (change)="toggleStatus(brand)" />
+                  <span class="slider round"></span>
+                </label>
+                <span class="status-text">{{ brand.status ? 'Active' : 'Inactive' }}</span>
+              </td>
+              <td class="action-buttons">
+                <button class="btn-edit" (click)="openEditModal(brand)" title="Edit">
+                  <i class='bx bx-edit'></i>
+                </button>
+                <button class="btn-delete" (click)="openDeleteModal(brand)" title="Delete">
+                  <i class='bx bx-trash'></i>
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="filteredBrands.length === 0 && !isLoading">
+              <td colspan="5" class="no-data">No brands found</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</section>
+
+<!-- Add Brand Modal -->
+<div id="addBrandModal" class="modal" [class.show]="showAddModal">
+    <div class="modal-content">
+      <span class="close" (click)="closeAddModal()">&times;</span>
+      <h2>Add New Brand</h2>
+      <form (ngSubmit)="createBrand()" #addBrandForm="ngForm">
+        <div class="form-group">
+          <label for="brandName">Brand Name *</label>
+          <input type="text" id="brandName" name="brandName" [(ngModel)]="newBrand.name" required />
+        </div>
+        <div class="form-group">
+          <label for="brandDescription">Description</label>
+          <textarea id="brandDescription" name="brandDescription" rows="3" [(ngModel)]="newBrand.description"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="brandImage">Brand Logo</label>
+          <input type="file" id="brandImage" name="brandImage" 
+                 (change)="onFileSelected($event)" 
+                 accept="image/*" />
+          <small class="file-info" *ngIf="selectedFile">
+            Selected: {{ selectedFile.name }} ({{ (selectedFile.size / 1024).toFixed(2) }} KB)
+          </small>
+        </div>
+        <div class="form-group">
+          <label for="brandStatus">Status</label>
+          <label class="switch">
+            <input type="checkbox" id="brandStatus" name="brandStatus" [(ngModel)]="newBrand.status" />
+            <span class="slider round"></span>
+          </label>
+          <span class="status-text">{{ newBrand.status ? 'Active' : 'Inactive' }}</span>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn-cancel" (click)="closeAddModal()" [disabled]="isLoading">Cancel</button>
+          <button type="submit" class="btn-submit" [disabled]="addBrandForm.invalid || isLoading">
+            <span *ngIf="!isLoading">Add Brand</span>
+            <span *ngIf="isLoading" class="loading-text">
+              <i class='bx bx-loader-circle bx-spin'></i> Processing...
+            </span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <!-- Edit Brand Modal -->
+  <div id="editBrandModal" class="modal" [class.show]="showEditModal">
+    <div class="modal-content">
+      <span class="close" (click)="closeEditModal()">&times;</span>
+      <h2>Edit Brand</h2>
+      <form (ngSubmit)="updateBrand()" #editBrandForm="ngForm">
+        <div class="form-group">
+          <label for="editBrandName">Brand Name *</label>
+          <input type="text" id="editBrandName" name="editBrandName" 
+                 [(ngModel)]="selectedBrand.name" required />
+        </div>
+        <div class="form-group">
+          <label for="editBrandDescription">Description</label>
+          <textarea id="editBrandDescription" name="editBrandDescription" 
+                    rows="3" [(ngModel)]="selectedBrand.description"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="editBrandImage">Brand Logo</label>
+          <input type="file" id="editBrandImage" name="editBrandImage" 
+                 (change)="onFileSelected($event)" 
+                 accept="image/*" />
+          <div *ngIf="selectedBrand.logoUrl" class="current-image">
+            <img [src]="selectedBrand.logoUrl" alt="Current Logo" class="brand-logo" />
+            <span>Current Logo</span>
+          </div>
+          <small class="file-info" *ngIf="selectedFile">
+            New selected: {{ selectedFile.name }} ({{ (selectedFile.size / 1024).toFixed(2) }} KB)
+          </small>
+        </div>
+        <div class="form-group">
+          <label for="editBrandStatus">Status</label>
+          <label class="switch">
+            <input type="checkbox" id="editBrandStatus" name="editBrandStatus" [(ngModel)]="selectedBrand.status" />
+            <span class="slider round"></span>
+          </label>
+          <span class="status-text">{{ selectedBrand.status ? 'Active' : 'Inactive' }}</span>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn-cancel" (click)="closeEditModal()" [disabled]="isLoading">Cancel</button>
+          <button type="submit" class="btn-submit" [disabled]="editBrandForm.invalid || isLoading">
+            <span *ngIf="!isLoading">Save Changes</span>
+            <span *ngIf="isLoading" class="loading-text">
+              <i class='bx bx-loader-circle bx-spin'></i> Updating...
+            </span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <!-- Delete Confirmation Modal -->
+  <div id="deleteBrandModal" class="modal" [class.show]="showDeleteModal">
+    <div class="modal-content">
+      <span class="close" (click)="closeDeleteModal()">&times;</span>
+      <h2>Delete Brand</h2>
+      <p>
+        Are you sure you want to delete
+        <strong>"{{ selectedBrand.name }}"</strong>?
+      </p>
+      <p class="warning">
+        This action cannot be undone and will permanently remove the brand 
+        <span *ngIf="selectedBrand.logoUrl">and its logo</span>.
+      </p>
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" (click)="closeDeleteModal()" [disabled]="isLoading">Cancel</button>
+        <button type="button" class="btn-delete-confirm" (click)="deleteBrand()" [disabled]="isLoading">
+          <span *ngIf="!isLoading">Delete</span>
+          <span *ngIf="isLoading" class="loading-text">
+            <i class='bx bx-loader-circle bx-spin'></i> Deleting...
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>

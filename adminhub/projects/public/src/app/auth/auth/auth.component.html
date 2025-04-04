@@ -1,0 +1,53 @@
+<div class="auth-container">
+  <h2>{{ isLoginMode ? 'Đăng nhập' : 'Đăng ký' }}</h2>
+
+  <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
+    <!-- Trường chỉ hiển thị khi đăng ký -->
+    <div class="form-group" *ngIf="!isLoginMode">
+      <label for="fullName">Họ và tên</label>
+      <input id="fullName" type="text" formControlName="fullName">
+      <div class="error" *ngIf="authForm?.get('fullName')?.invalid && authForm?.get('fullName')?.touched">
+        Vui lòng nhập họ tên
+      </div>
+    </div>
+
+    <div class="form-group" *ngIf="!isLoginMode">
+      <label for="phone">Số điện thoại</label>
+      <input id="phone" type="tel" formControlName="phone">
+      <div class="error" *ngIf="authForm?.get('phone')?.invalid && authForm?.get('phone')?.touched">
+        Vui lòng nhập số điện thoại
+      </div>
+    </div>
+
+    <!-- Trường email (đăng nhập dùng email/phone) -->
+    <div class="form-group">
+      <label for="email">{{ isLoginMode ? 'Email hoặc Số điện thoại' : 'Email' }}</label>
+      <input id="email" type="text" formControlName="emailOrPhone">
+      <div class="error" *ngIf="authForm?.get('emailOrPhone')?.invalid && authForm?.get('emailOrPhone')?.touched">
+        {{ isLoginMode ? 'Vui lòng nhập email hoặc số điện thoại' : 'Email không hợp lệ' }}
+      </div>
+    </div>
+
+    <!-- Trường mật khẩu -->
+    <div class="form-group">
+      <label for="password">Mật khẩu</label>
+      <input id="password" type="password" formControlName="password">
+      <div class="error" *ngIf="authForm?.get('password')?.invalid && authForm?.get('password')?.touched">
+        Mật khẩu phải có ít nhất 6 ký tự
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="authForm.invalid || isLoading">
+      {{ isLoading ? 'Đang xử lý...' : (isLoginMode ? 'Đăng nhập' : 'Đăng ký') }}
+    </button>
+
+    <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+  </form>
+
+  <p>
+    {{ isLoginMode ? 'Chưa có tài khoản?' : 'Đã có tài khoản?' }}
+    <a href="#" (click)="toggleMode()">
+      {{ isLoginMode ? 'Đăng ký ngay' : 'Đăng nhập ngay' }}
+    </a>
+  </p>
+</div>

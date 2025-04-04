@@ -1,0 +1,75 @@
+<section id="content">
+    <nav>
+        <i class='bx bx-menu' ></i>
+        <a href="#" class="nav-link">Categories</a>
+        <form action="#">
+            <div class="form-input">
+                <input type="search" placeholder="Search...">
+                <button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
+            </div>
+        </form>
+        <input type="checkbox" id="switch-mode" hidden>
+        <label for="switch-mode" class="switch-mode"></label>
+        <a href="#" class="notification">
+            <i class='bx bxs-bell' ></i>
+            <span class="num">8</span>
+        </a>
+        <a href="#" class="profile">
+            <img src="img/people.png">
+        </a>
+    </nav>
+
+    <main class="content">
+      <div class="page-header">
+        <h1>Color Management</h1>
+      </div>
+
+      <div class="stats-grid">
+        <div class="card">
+          <h3>36</h3>
+          <p>Total Colors</p>
+        </div>
+        <div class="card">
+          <h3>158</h3>
+          <p>Products/Color</p>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <div class="table-header">
+          <h4>Color List</h4>
+          <div class="table-actions">
+            <button class="btn btn-primary">Add Color</button>
+          </div>
+        </div>
+        
+        <table>
+          <thead>
+            <tr>
+              <th>Color Name</th>
+              <th>Hex Code</th>
+              <th>Sample</th>
+              <th>Products</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Red</td>
+              <td>#FF0000</td>
+              <td><div class="color-swatch" style="background: #FF0000"></div></td>
+              <td>45</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+    
+    <style>
+      .color-swatch {
+        width: 40px;
+        height: 20px;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+      }
+    </style>
+</section>

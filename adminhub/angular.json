@@ -26,15 +26,20 @@
             "tsConfig": "projects/public/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
+              "projects/public/src/favicon.ico",
+              "projects/public/src/assets",
               {
                 "glob": "**/*",
-                "input": "projects/public/public"
+                "input": "projects/public/src/assets/js",
+                "output": "/assets/js/"
               }
             ],
             "styles": [
               "projects/public/src/styles.scss"
             ],
-            "scripts": [],
+            "scripts": [
+              "projects/public/src/assets/js/scripts.js"
+            ],
             "server": "projects/public/src/main.server.ts",
             "outputMode": "server",
             "ssr": {
@@ -90,15 +95,15 @@
             "tsConfig": "projects/public/tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              {
-                "glob": "**/*",
-                "input": "projects/public/public"
-              }
+              "projects/public/src/favicon.ico",
+              "projects/public/src/assets"
             ],
             "styles": [
               "projects/public/src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "projects/public/src/assets/js/scripts.js"
+            ]
           }
         }
       }
@@ -126,15 +131,20 @@
             "tsConfig": "projects/admin/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
+              "projects/admin/src/favicon.ico",
+              "projects/admin/src/assets",
               {
                 "glob": "**/*",
-                "input": "projects/admin/public"
+                "input": "projects/admin/src/assets/js",
+                "output": "/assets/js/"
               }
             ],
             "styles": [
               "projects/admin/src/styles.scss"
             ],
-            "scripts": [],
+            "scripts": [
+              "projects/admin/src/assets/js/script.js"
+            ],
             "server": "projects/admin/src/main.server.ts",
             "outputMode": "server",
             "ssr": {
@@ -190,18 +200,19 @@
             "tsConfig": "projects/admin/tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              {
-                "glob": "**/*",
-                "input": "projects/admin/public"
-              }
+              "projects/admin/src/favicon.ico",
+              "projects/admin/src/assets"
             ],
             "styles": [
               "projects/admin/src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "projects/admin/src/assets/js/script.js"
+            ]
           }
         }
       }
     }
-  }
+  },
+  "defaultProject": "admin"
 }

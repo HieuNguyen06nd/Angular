@@ -1,0 +1,56 @@
+<div class="features">
+    <div class="container">
+        <div class="wrapper">
+            <div class="column">
+                <div class="sectop flexitem">
+                    <h2><span class="circle"></span><span>Featured Products</span></h2>
+                    <div class="second-links">
+                        <a href="#" class="view-all">View all
+                            <i class="ri-arrow-right-line"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="products main flexwrap">
+                    <div class="item" *ngFor="let product of products">
+                        <div class="media">
+                            <div class="thumbnail object-cover">
+                                <a [routerLink]="['/product', product.id]">
+                                    <img [src]="getProductImage(product)" alt="{{ product.name }}" *ngIf="product">
+                                    
+                                </a>
+                            </div>
+                            <div class="hoverable">
+                                <ul>
+                                    <li><a href=""><i class="ri-heart-line"></i></a></li>
+                                    <li><a href="#"><i class="ri-eye-line"></i></a></li>
+                                    <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
+                                </ul>
+                            </div>
+                            <div class="discount circle flexcenter" *ngIf="getDiscount(product) > 0">
+                                <span>{{ getDiscount(product) }}%</span>
+                            </div>
+                        </div>
+                        <div class="content">
+                            <div class="rating">
+                                <div class="stars"></div>
+                                <span class="mini-text">(2.343)</span>
+                            </div>
+                            <h3><a [routerLink]="['/product', product.id]">{{ product.name }}</a></h3>
+                            <div class="price">
+                                <span class="current">{{ getPrice(product) | currency }}</span>
+                                <span class="normal mini-text" *ngIf="getOriginalPrice(product) !== getPrice(product)">
+                                    {{ getOriginalPrice(product) | currency }}
+                                </span>
+                            </div>
+                            <div class="footer">
+                                <ul class="mini-text">
+                                    <li *ngFor="let item of product.productItems">{{ item.materialName }}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div> <!-- end item -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

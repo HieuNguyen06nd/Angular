@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
+// sidebar.component.ts
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [],
+  standalone: true, // Đảm bảo đúng với kiến trúc của bạn
   templateUrl: './sidebar.component.html',
-  styles: ``
+  styleUrls: ['./sidebar.component.scss'],
 })
 export class SidebarComponent {
-
 }

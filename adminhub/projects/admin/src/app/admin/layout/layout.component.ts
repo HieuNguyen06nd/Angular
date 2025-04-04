@@ -1,5 +1,5 @@
 // projects/admin/src/app/layout/layout.component.ts
-import { Component } from '@angular/core';
+import { Component, Input} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { CommonModule } from '@angular/common';
@@ -12,9 +12,5 @@ import { CommonModule } from '@angular/common';
   styleUrl: './layout.component.scss'
 })
 export class LayoutComponent {
-  isSidebarCollapsed = false;
 
-  toggleSidebar() {
-    this.isSidebarCollapsed = !this.isSidebarCollapsed;
-  }
 }

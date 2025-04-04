@@ -105,56 +105,113 @@
 				<img src="img/people.png">
 			</a>
 		</nav>
-        <div class="container">
-            <main class="content">
-              <div class="page-header">
-                <h1>Category Management</h1>
-              </div>
-        
-              <div class="stats-grid">
-                <div class="card">
-                  <h3>58</h3>
-                  <p>Total Categories</p>
-                </div>
-                <div class="card">
-                  <h3>92%</h3>
-                  <p>Active Categories</p>
-                </div>
-                <div class="card">
-                  <h3>25</h3>
-                  <p>Products/Category</p>
-                </div>
-              </div>
-        
-              <div class="table-container">
-                <div class="table-header">
-                  <h4>Category List</h4>
-                  <div class="table-actions">
-                    <button class="btn btn-primary" data-crud="add" data-entity="brand">Add Brand</button>
-                  </div>
-                </div>
-                
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Category Name</th>
-                      <th>Description</th>
-                      <th>Products</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>Shoes</td>
-                      <td>All footwear products</td>
-                      <td>245</td>
-                      <td><span class="status-badge status-active">Active</span></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </main>
-          </div>
+		<div class="container">
+			<main class="content">
+				<div class="page-header">
+					<h1>Category Management</h1>
+				</div>
+		
+				<div class="stats-grid">
+					<div class="card">
+						<h3 id="total-categories">0</h3>
+						<p>Total Categories</p>
+					</div>
+					<div class="card">
+						<h3 id="active-percentage">0%</h3>
+						<p>Active Categories</p>
+					</div>
+					<div class="card">
+						<h3>Hierarchical</h3>
+						<p>Category Structure</p>
+					</div>
+				</div>
+		
+				<div class="table-container">
+					<div class="table-header">
+						<h4>Category List</h4>
+						<div class="table-actions">
+							<button class="btn btn-primary" data-crud="add" data-entity="category">
+								<i class="fas fa-plus"></i> Add Category
+							</button>
+						</div>
+					</div>
+					
+					<table>
+						<thead>
+							<tr>
+								<th>ID</th>
+								<th>Name</th>
+								<th>Description</th>
+								<th>Icon</th>
+								<th>Parent</th>
+								<th>Status</th>
+								<th>Actions</th>
+							</tr>
+						</thead>
+						<tbody id="category-table-body">
+							<!-- Dữ liệu sẽ được thêm động bằng JavaScript -->
+							<tr>
+								<td colspan="7" class="text-center">Loading data...</td>
+							</tr>
+						</tbody>
+					</table>
+					
+					<!-- Phân trang -->
+					<div class="pagination">
+						<button id="prev-page" disabled><i class="fas fa-chevron-left"></i></button>
+						<span id="page-info">Page 1 of 1</span>
+						<button id="next-page" disabled><i class="fas fa-chevron-right"></i></button>
+					</div>
+				</div>
+				
+				<!-- Modal thêm/sửa category -->
+				<div id="category-modal" class="modal">
+					<div class="modal-content">
+						<span class="close">&times;</span>
+						<h2 id="modal-title">Add New Category</h2>
+						<form id="category-form">
+							<input type="hidden" id="category-id">
+							
+							<div class="form-group">
+								<label for="category-name">Name*</label>
+								<input type="text" id="category-name" required>
+							</div>
+							
+							<div class="form-group">
+								<label for="category-description">Description</label>
+								<textarea id="category-description" rows="3"></textarea>
+							</div>
+							
+							<div class="form-group">
+								<label for="category-icon">Icon Class</label>
+								<input type="text" id="category-icon" placeholder="e.g. fa-solid fa-house">
+							</div>
+							
+							<div class="form-group">
+								<label for="category-parent">Parent Category</label>
+								<select id="category-parent">
+									<option value="">-- None --</option>
+									<!-- Các option sẽ được thêm động -->
+								</select>
+							</div>
+							
+							<div class="form-group">
+								<label for="category-active">Status</label>
+								<div class="checkbox-container">
+									<input type="checkbox" id="category-active" checked>
+									<label for="category-active">Active</label>
+								</div>
+							</div>
+							
+							<div class="form-actions">
+								<button type="button" class="btn btn-secondary" id="cancel-btn">Cancel</button>
+								<button type="submit" class="btn btn-primary">Save</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</main>
+		</div>
     </section>
 
   <script src="script.js"></script>

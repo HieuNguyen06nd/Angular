@@ -1,0 +1,129 @@
+.auth-modal {
+  background: white;
+  border-radius: 8px;
+  padding: 25px;
+  width: 400px;
+  max-width: 95vw;
+  position: fixed !important; // Đảm bảo modal không bị ảnh hưởng bởi vị trí khác
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 1051 !important; // Đảm bảo hiển thị trên backdrop
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  display: block !important;
+  opacity: 1 !important;
+
+  .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 15px;
+
+      h3 {
+          margin: 0;
+          font-size: 1.5rem;
+      }
+
+      .close-btn {
+          background: none;
+          border: none;
+          font-size: 24px;
+          cursor: pointer;
+          padding: 0;
+          line-height: 1;
+      }
+  }
+
+  .tabs {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+
+      button {
+          flex: 1;
+          padding: 10px;
+          border: none;
+          background: #f5f5f5;
+          cursor: pointer;
+          border-radius: 4px;
+          transition: all 0.3s ease;
+
+          &.active {
+              background: #007bff;
+              color: white;
+          }
+      }
+  }
+
+  .form-group {
+      margin-bottom: 15px;
+
+      label {
+          display: block;
+          margin-bottom: 5px;
+          font-weight: 500;
+      }
+
+      input {
+          width: 100%;
+          padding: 8px 12px;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+      }
+
+      div {
+          color: #dc3545;
+          font-size: 0.875rem;
+          margin-top: 5px;
+      }
+  }
+
+  button[type="submit"] {
+      width: 100%;
+      padding: 12px;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 15px;
+
+      &:disabled {
+          background: #6c757d;
+          cursor: not-allowed;
+      }
+  }
+
+  .error-message {
+      color: #dc3545;
+      margin: 10px 0;
+      text-align: center;
+  }
+}
+
+// Đảm bảo backdrop không che modal
+.modal-backdrop {
+  z-index: 1050 !important;
+  background: rgba(0, 0, 0, 0.5) !important; // Làm tối nền khi mở modal
+}
+/* auth-modal.component.scss */
+.modal-body {
+  border: 2px solid red !important; /* Để thấy rõ kích thước modal body */
+  padding: 20px !important;
+  background: white !important;
+}
+
+form {
+  background: #f8f9fa !important;
+  padding: 20px !important;
+  border-radius: 5px !important;
+}
+
+input {
+  border: 1px solid #ccc !important;
+  margin-bottom: 10px !important;
+  padding: 8px !important;
+  width: 100% !important;
+}
