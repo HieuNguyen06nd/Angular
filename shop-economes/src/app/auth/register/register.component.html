@@ -1,0 +1,25 @@
+<div class="register-container">
+    <h2>Đăng ký</h2>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div>
+        <label>Email:</label>
+        <input type="email" formControlName="email" placeholder="Email" />
+      </div>
+      <div>
+        <label>Mật khẩu:</label>
+        <input type="password" formControlName="password" placeholder="Mật khẩu" />
+      </div>
+      <div>
+        <label>Họ và tên:</label>
+        <input type="text" formControlName="fullName" placeholder="Họ và tên" />
+      </div>
+      <div>
+        <label>Số điện thoại:</label>
+        <input type="text" formControlName="phone" placeholder="SĐT" />
+      </div>
+      <button type="submit">Đăng ký</button>
+      <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+      <div *ngIf="successMessage" class="success">{{ successMessage }}</div>
+    </form>
+  </div>
+  

@@ -1,0 +1,15 @@
+<div class="login-container">
+    <h2>Đăng nhập</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <label>Email hoặc Số điện thoại:</label>
+      <input type="text" formControlName="emailOrPhone" required />
+  
+      <label>Password:</label>
+      <input type="password" formControlName="password" required />
+  
+      <button type="submit" [disabled]="loginForm.invalid">Login</button>  <!-- Disable button khi form không hợp lệ -->
+      
+      <p *ngIf="errorMessage" style="color: red">{{ errorMessage }}</p>  <!-- Hiển thị thông báo lỗi nếu có -->
+    </form>      
+  </div>
+  
