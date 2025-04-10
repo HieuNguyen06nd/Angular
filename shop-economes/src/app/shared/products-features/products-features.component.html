@@ -1,0 +1,78 @@
+<div class="features">
+    <div class="container">
+        <div class="wrapper">
+            <div class="column">
+                <div class="sectop flexitem">
+                    <h2><span class="circle"></span><span>Featured Products</span></h2>
+                    <div class="second-links">
+                        <a href="#" class="view-all">View all
+                            <i class="ri-arrow-right-line"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="products main flexwrap">
+                    <div class="item" *ngFor="let product of products">
+                        <ng-container *ngIf="product.productItems.length > 0 && product.images.length > 0">
+                          <div class="media">
+                            <div class="thumbnail object-cover">
+                              <a [routerLink]="['/product', product.id]">
+                                <img [src]="product.images[0]" [alt]="product.name" />
+                              </a>
+                            </div>
+                      
+                            <div class="hoverable">
+                              <ul>
+                                <li class="active"><a href="#"><i class="ri-heart-line"></i></a></li>
+                                <li><a href="#"><i class="ri-eye-line"></i></a></li>
+                                <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
+                              </ul>
+                            </div>
+                      
+                            <!-- Hiển thị giảm giá nếu có -->
+                            <div 
+                              class="discount circle flexcenter" 
+                              *ngIf="product.productItems[0].discountPercent !== null">
+                              <span>{{ product.productItems[0].discountPercent }}%</span>
+                            </div>
+                          </div>
+                      
+                          <div class="content">
+                            <div class="rating">
+                              <div class="stars"></div>
+                              <span class="mini-text">(2.343)</span>
+                            </div>
+                      
+                            <h3>
+                              <a [routerLink]="['/product', product.id]">{{ product.name }}</a>
+                            </h3>
+                      
+                            <div class="price">
+                              <span class="current">
+                                ${{ product.productItems[0].newPrice || product.productItems[0].price }}
+                              </span>
+                              <span 
+                                class="normal mini-text" 
+                                *ngIf="product.productItems[0].discountPercent !== null">
+                                ${{ product.productItems[0].price }}
+                              </span>
+                            </div>
+                      
+                            <div class="footer">
+                              <ul class="mini-text">
+                                <li *ngIf="product.productItems[0].materialName">
+                                  {{ product.productItems[0].materialName }}
+                                </li>
+                                <li *ngIf="product.productItems[0].colorName">
+                                  {{ product.productItems[0].colorName }}
+                                </li>
+                                <li *ngIf="product.brandName">{{ product.brandName }}</li>
+                              </ul>
+                            </div>
+                          </div>
+                        </ng-container>
+                      </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
