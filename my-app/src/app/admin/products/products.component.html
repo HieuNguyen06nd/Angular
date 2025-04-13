@@ -56,7 +56,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let product of filteredProducts">
-          <td>
+          <td class="product-image-container">
             <img *ngIf="product.images?.length"
               [src]="getMainImage(product.images || [])"
               class="product-image"

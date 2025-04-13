@@ -1,0 +1,140 @@
+<!-- order.component.html -->
+<main class="content" *ngIf="!showOrderDetail">
+  <div class="page-header">
+    <h1>Order Management</h1>
+  </div>
+
+  <div class="stats-grid">
+    <div class="card">
+      <h3>₫2.45B</h3>
+      <p>Total Revenue</p>
+    </div>
+    <div class="card">
+      <h3>1,403</h3>
+      <p>Pending Orders</p>
+    </div>
+    <div class="card">
+      <h3>92%</h3>
+      <p>Completion Rate</p>
+    </div>
+    <div class="card">
+      <h3>58</h3>
+      <p>Returns</p>
+    </div>
+  </div>
+
+  <div class="table-container">
+    <div class="table-header">
+      <h4>Order List</h4>
+      <div class="table-actions">
+        <button class="btn btn-primary">Process Orders</button>
+      </div>
+    </div>
+    
+    <table>
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Customer</th>
+          <th>Date</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of orders">
+          <td>#{{ order.id }}</td>
+          <td>{{ order.customerName }} ({{ order.customerPhone }})</td>
+          <td>{{ order.createdAt | date:'short' }}</td>
+          <td>{{ order.totalPrice | currency }}</td>
+          <td>
+            <span [class]="'status-badge status-' + order.status.toLowerCase()">
+              {{ order.status }}
+            </span>
+          </td>
+          <td>
+            <button class="btn-icon" (click)="viewOrderDetail(order)">
+              <i class="ri-eye-line"></i>
+            </button>
+            <button class="btn-icon">
+              <i class="ri-printer-fill"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+
+<!-- Order Detail Section -->
+<div *ngIf="showOrderDetail && selectedOrder" class="order-detail-container">
+  <div class="order-detail">
+    <button class="btn-back" (click)="closeDetail()">
+      <i class="ri-arrow-left-line"></i> Back to Orders
+    </button>
+
+    <h2>Order Details #{{ selectedOrder.id }}</h2>
+
+    <div class="order-info-grid">
+      <div class="customer-info">
+        <h4>Customer</h4>
+        <p class="customer-name">{{ selectedOrder.customerName }}</p>
+        <p class="customer-phone">{{ selectedOrder.customerPhone }}</p>
+        <p class="customer-address">{{ selectedOrder.customerAddress }}</p>
+      </div>
+
+      <div class="order-status">
+        <h4>Status</h4>
+        <span [class]="'status-badge status-' + selectedOrder.status.toLowerCase()">
+          {{ selectedOrder.status | uppercase }}
+        </span>
+      </div>
+    </div>
+
+    <div class="order-items">
+      <h4>Order Items</h4>
+      <table class="items-table">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Color</th>
+            <th>Size</th>
+            <th>Qty</th>
+            <th>Price</th>
+            <th>Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of selectedOrder.orderItems">
+            <td>{{ item.productName }}</td>
+            <td>{{ item.colorName }}</td>
+            <td>{{ item.sizeName }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.price | currency }}</td>
+            <td>{{ item.price * item.quantity | currency }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="price-summary">
+      <div class="summary-row">
+        <span>Subtotal:</span>
+        <!-- <span>{{ calculateSubtotal() | currency }}</span> -->
+      </div>
+      <div class="summary-row">
+        <span>Shipping:</span>
+        <!-- <span>{{ selectedOrder.shippingFee | currency }}</span> -->
+      </div>
+      <div class="summary-row">
+        <span>Tax:</span>
+        <!-- <span>{{ selectedOrder.taxAmount | currency }}</span> -->
+      </div>
+      <div class="summary-row total">
+        <span>Total:</span>
+        <span>{{ selectedOrder.totalPrice | currency }}</span>
+      </div>
+    </div>
+  </div>
+</div>

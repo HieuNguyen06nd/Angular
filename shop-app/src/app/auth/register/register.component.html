@@ -1,0 +1,35 @@
+<div class="max-w-md mx-auto mt-10 p-6 border rounded shadow bg-white">
+    <h2 class="text-2xl font-bold mb-4 text-center">Đăng ký tài khoản</h2>
+  
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="mb-4">
+        <label class="block mb-1 font-medium">Họ tên</label>
+        <input formControlName="fullName" type="text" class="w-full border p-2 rounded" />
+      </div>
+  
+      <div class="mb-4">
+        <label class="block mb-1 font-medium">Email</label>
+        <input formControlName="email" type="email" class="w-full border p-2 rounded" />
+      </div>
+  
+      <div class="mb-4">
+        <label class="block mb-1 font-medium">Số điện thoại</label>
+        <input formControlName="phone" type="text" class="w-full border p-2 rounded" />
+      </div>
+  
+      <div class="mb-4">
+        <label class="block mb-1 font-medium">Mật khẩu</label>
+        <input formControlName="password" type="password" class="w-full border p-2 rounded" />
+      </div>
+  
+      <button type="submit"
+        class="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
+        [disabled]="isSubmitting || registerForm.invalid">
+        {{ isSubmitting ? 'Đang đăng ký...' : 'Đăng ký' }}
+      </button>
+    </form>
+  
+    <p class="text-green-600 mt-4" *ngIf="successMessage">{{ successMessage }}</p>
+    <p class="text-red-600 mt-4" *ngIf="errorMessage">{{ errorMessage }}</p>
+  </div>
+  

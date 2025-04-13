@@ -1,0 +1,96 @@
+<main class="content">
+  <div class="page-header">
+    <h1>Brand Management</h1>
+  </div>
+
+  <div class="table-container">
+    <div class="table-header">
+      <h4>Brand List</h4>
+      <div class="table-actions">
+        <button class="btn btn-primary" (click)="openForm()">Add Brand</button>
+      </div>
+    </div>
+
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Image</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let brand of brands; let i = index">
+          <td>{{ brand.name }}</td>
+          <td>{{ brand.description }}</td>
+          <td>
+            <img [src]="brand.logoUrl" [alt]="brand.name" style="max-height: 70px;" />
+          </td>
+          <td>
+            <span [ngClass]="{
+              'badge bg-success': brand.status === true,
+              'badge bg-secondary': brand.status === false
+            }">
+              {{ brand.status ? 'ACTIVE' : 'INACTIVE' }}
+            </span>
+          </td>
+          <td>
+            <button class="btn btn-sm btn-outline-primary" (click)="editBrand(i)">
+              <i class="ri-edit-box-line"></i>
+            </button>
+            <button class="btn btn-sm btn-outline-danger" (click)="deleteBrand(i)">
+              <i class="ri-delete-bin-line"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal Form -->
+  <div class="modal fade show d-block" *ngIf="showForm" style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal-dialog">
+      <div class="modal-content custom-modal">
+        <div class="modal-header">
+          <h5 class="modal-title">{{ isEditing ? 'Edit Brand' : 'Add Brand' }}</h5>
+          <button type="button" class="btn-close" (click)="cancel()"></button>
+        </div>
+        <form [formGroup]="brandForm" (ngSubmit)="onSubmit()">
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label">Name:</label>
+              <input type="text" formControlName="name" class="form-control" />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Description:</label>
+              <textarea formControlName="description" class="form-control"></textarea>
+            </div>
+            <!-- File input cho logo -->
+            <div class="mb-3">
+              <label class="form-label">Logo:</label>
+              <input type="file" class="form-control" (change)="onFileSelected($event)" accept="image/*" />
+              <div *ngIf="previewUrl" class="mt-2">
+                <img [src]="previewUrl" alt="Preview" style="max-height: 120px; border-radius: 8px;" />
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Status:</label>
+              <select formControlName="status" class="form-select">
+                <option value="ACTIVE">Active</option>
+                <option value="INACTIVE">Inactive</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">
+              {{ isEditing ? 'Update' : 'Add' }}
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>

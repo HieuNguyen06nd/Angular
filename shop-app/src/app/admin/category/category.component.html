@@ -1,0 +1,156 @@
+<div class="category-container">
+    <!-- Thẻ thống kê -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <h2>{{ totalCategories }}</h2>
+        <p>Total Categories</p>
+      </div>
+      <div class="stat-card">
+        <h2>{{ topLevel }}</h2>
+        <p>Top Level</p>
+      </div>
+      <div class="stat-card">
+        <h2>{{ subCategories }}</h2>
+        <p>Subcategories</p>
+      </div>
+    </div>
+  
+    <!-- Header -->
+    <div class="category-header">
+      <h3>Category Hierarchy</h3>
+      <div class="category-header-actions">
+        <button class="btn btn-sm btn-light me-2" (click)="expandAll()">Expand All</button>
+        <button class="btn btn-sm btn-light" (click)="collapseAll()">Collapse All</button>
+        <button class="btn btn-primary ms-3" (click)="addCategory()">+ Add Category</button>
+      </div>
+    </div>
+  
+    <!-- Cây phân cấp danh mục -->
+    <ul class="category-tree">
+      <ng-container *ngFor="let cat of categories">
+        <li>
+          <div class="category-item">
+            <div class="category-line">
+              <!-- Icon toggle nếu có con -->
+              <i class="toggle-icon" 
+                 *ngIf="cat.children && cat.children.length" 
+                 (click)="toggleNode(cat)"
+                 [class.collapsed]="cat.collapsed"></i>
+              <!-- Tên danh mục -->
+              <span class="category-name">{{ cat.name }}</span>
+              <!-- Badge trạng thái -->
+              <span class="badge" [ngClass]="cat.active ? 'badge-active' : 'badge-inactive'">
+                {{ cat.active ? 'Active' : 'Inactive' }}
+              </span>
+              <!-- Nút hành động -->
+              <div class="category-actions">
+                <button class="btn btn-sm btn-outline-primary" (click)="editCategory(cat)">Edit</button>
+                <button class="btn btn-sm btn-outline-danger" (click)="deleteCategory(cat)">Delete</button>
+              </div>
+            </div>
+            <!-- Danh mục con (đệ quy) -->
+            <ul class="category-tree children" *ngIf="cat.children && cat.children.length && !cat.collapsed">
+              <ng-container *ngFor="let sub of cat.children">
+                <li>
+                  <div class="category-item">
+                    <div class="category-line">
+                      <i class="toggle-icon" 
+                         *ngIf="sub.children && sub.children.length" 
+                         (click)="toggleNode(sub)"
+                         [class.collapsed]="sub.collapsed"></i>
+                      <span class="category-name">{{ sub.name }}</span>
+                      <span class="badge" [ngClass]="sub.active ? 'badge-active' : 'badge-inactive'">
+                        {{ sub.active ? 'Active' : 'Inactive' }}
+                      </span>
+                      <div class="category-actions">
+                        <button class="btn btn-sm btn-outline-primary" (click)="editCategory(sub)">Edit</button>
+                        <button class="btn btn-sm btn-outline-danger" (click)="deleteCategory(sub)">Delete</button>
+                      </div>
+                    </div>
+                    <!-- Nếu cần, thêm cấp con của sub -->
+                    <ul class="category-tree children" *ngIf="sub.children && sub.children.length && !sub.collapsed">
+                      <!-- Bạn có thể đệ quy tương tự cho cấp 3 -->
+                      <li *ngFor="let subsub of sub.children">
+                        <div class="category-item">
+                          <div class="category-line">
+                            <!-- Nếu có con nữa, hiển thị toggle icon -->
+                            <i class="toggle-icon" 
+                               *ngIf="subsub.children && subsub.children.length" 
+                               (click)="toggleNode(subsub)"
+                               [class.collapsed]="subsub.collapsed"></i>
+                            <span class="category-name">{{ subsub.name }}</span>
+                            <span class="badge" [ngClass]="subsub.active ? 'badge-active' : 'badge-inactive'">
+                              {{ subsub.active ? 'Active' : 'Inactive' }}
+                            </span>
+                            <div class="category-actions">
+                              <button class="btn btn-sm btn-outline-primary" (click)="editCategory(subsub)">Edit</button>
+                              <button class="btn btn-sm btn-outline-danger" (click)="deleteCategory(subsub)">Delete</button>
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+              </ng-container>
+            </ul>
+          </div>
+        </li>
+      </ng-container>
+    </ul>
+  </div>
+  
+
+<!-- Category Modal -->
+<!-- Modal Form (Hiện khi showCategoryForm = true) -->
+<div class="modal-overlay" *ngIf="showCategoryForm">
+  <div class="modal-form">
+    <h2>{{ isEditMode ? 'Edit Category' : 'Add Category' }}</h2>
+    <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label>Name</label>
+        <input type="text" formControlName="name" />
+        <div *ngIf="categoryForm.get('name')?.invalid && categoryForm.get('name')?.touched" class="error">
+          Name is required.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Parent Category</label>
+        <select formControlName="parentId">
+          <option [value]="null">-- No Parent (Top-level) --</option>
+          <ng-container *ngFor="let cat of categories">
+            <option [value]="cat.id">{{ cat.name }}</option>
+            <ng-container *ngIf="cat.children">
+              <option *ngFor="let child of cat.children" [value]="child.id">
+                &nbsp;&nbsp;↳ {{ child.name }}
+              </option>
+            </ng-container>
+          </ng-container>
+        </select>
+      </div>
+      
+
+      <div class="form-group">
+        <label>Icon</label>
+        <input type="text" formControlName="icon" />
+      </div>
+
+      <div class="form-group">
+        <label>Description</label>
+        <textarea formControlName="description"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>
+          <input type="checkbox" formControlName="active" /> Active
+        </label>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" [disabled]="categoryForm.invalid">{{ isEditMode ? 'Update' : 'Create' }}</button>
+        <button type="button" (click)="cancelCategoryForm()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>

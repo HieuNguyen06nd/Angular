@@ -1,0 +1,107 @@
+<div class="trending" *ngIf="trendingProducts.length > 0">
+    <div class="container">
+      <div class="wrapper">
+        <div class="sectop flexitem">
+          <h2><span class="circle"></span><span>Trending Products</span></h2>
+        </div>
+  
+        <div class="column">
+          <div class="flexwrap">
+            <!-- Sản phẩm nổi bật nhất (đầu tiên) -->
+            <div class="row products big" *ngIf="trendingProducts.length > 0">
+              <div class="item">
+                <div class="offer">
+                  <p>Offer ends at</p>
+                  <ul class="flexcenter">
+                    <li>1</li>
+                    <li>15</li>
+                    <li>37</li>
+                    <li>60</li>
+                  </ul>
+                </div>
+                <div class="media">
+                  <div class="image">
+                    <a [routerLink]="['/product', trendingProducts[0].id]">
+                      <img [src]="trendingProducts[0].images[0]" [alt]="trendingProducts[0].name">
+                    </a>
+                  </div>
+                  <div class="hoverable">
+                    <ul>
+                      <li class="active"><a href="#"><i class="ri-heart-line"></i></a></li>
+                      <li><a href="#"><i class="ri-eye-line"></i></a></li>
+                      <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
+                    </ul>
+                  </div>
+                  <div class="discount circle flexcenter" *ngIf="trendingProducts[0].productItems[0]?.discountPercent">
+                    <span>{{ trendingProducts[0].productItems[0].discountPercent }}%</span>
+                  </div>
+                </div>
+                <div class="content">
+                  <h3 class="main-links">
+                    <a [routerLink]="['/product', trendingProducts[0].id]">{{ trendingProducts[0].name }}</a>
+                  </h3>
+                  <div class="price">
+                    <span class="current">${{ trendingProducts[0].productItems[0].newPrice }}</span>
+                    <span class="normal mini-text" *ngIf="trendingProducts[0].productItems[0]?.discountPercent">
+                      ${{ trendingProducts[0].productItems[0].price }}
+                    </span>
+                  </div>
+                  <div class="stock mini-text">
+                    <div class="qty">
+                      <span>Stock: <strong>{{ trendingProducts[0].productItems[0].stock }}</strong></span>
+                      <span>Sold: <strong>{{ trendingProducts[0].productItems[0].sold || 0 }}</strong></span>
+                    </div>
+                    <div class="bar">
+                        <div class="available"
+                             [style.width.%]="getStockPercent(trendingProducts[0].productItems[0])">
+                        </div>                   
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            <!-- Các sản phẩm còn lại -->
+            <div class="row products mini" *ngFor="let product of trendingProducts.slice(1)">
+              <div class="item">
+                <div class="media">
+                  <div class="thumbnail object-cover">
+                    <a [routerLink]="['/product', product.id]">
+                      <img [src]="product.images[0]" [alt]="product.name">
+                    </a>
+                  </div>
+                  <div class="hoverable">
+                    <ul>
+                      <li class="active"><a href="#"><i class="ri-heart-line"></i></a></li>
+                      <li><a href="#"><i class="ri-eye-line"></i></a></li>
+                      <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
+                    </ul>
+                  </div>
+                  <div class="discount circle flexcenter" *ngIf="product.productItems[0]?.discountPercent">
+                    <span>{{ product.productItems[0].discountPercent }}%</span>
+                  </div>
+                </div>
+                <div class="content">
+                  <h3 class="main-links">
+                    <a [routerLink]="['/product', product.id]">{{ product.name }}</a>
+                  </h3>
+                  <div class="price">
+                    <span class="current">${{ product.productItems[0].newPrice }}</span>
+                    <span class="normal mini-text" *ngIf="product.productItems[0]?.discountPercent">
+                      ${{ product.productItems[0].price }}
+                    </span>
+                  </div>
+                  <div class="mini-text">
+                    <p>{{ product.productItems[0].stock }} in stock</p>
+                    <p>Free Shipping</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End mini row -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

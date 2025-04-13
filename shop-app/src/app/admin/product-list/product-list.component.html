@@ -1,0 +1,282 @@
+<!-- product-list.component.html -->
+<div class="product-container">
+  <!-- Stats Row -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <h2>{{ totalProducts }}</h2>
+      <p>Total Products</p>
+    </div>
+    <div class="stat-card">
+      <h2>{{ totalStock }}</h2>
+      <p>Total Stock</p>
+    </div>
+    <div class="stat-card">
+      <h2>{{ activeProducts }}</h2>
+      <p>Active Products</p>
+    </div>
+  </div>
+
+  <!-- Product Header -->
+  <div class="product-header">
+    <h3>Product Management</h3>
+    <div class="product-actions">
+      <button class="btn btn-primary" (click)="addProduct()">+ Add Product</button>
+    </div>
+  </div>
+
+  <!-- Product Table -->
+  <div class="product-list">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Product Name</th>
+          <th>Category</th>
+          <th>Brand</th>
+          <th>Variants</th>
+          <th>Total Stock</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let product of products">
+          <tr>
+            <td>{{ product.name }}</td>
+            <td>{{ product.categoryName }}</td>
+            <td>{{ product.brandName }}</td>
+            <td>
+              <button class="btn btn-sm btn-info" 
+                      (click)="toggleProductItems(product)">
+                {{ product.collapsed ? 'Hide' : 'Show' }} Variants
+              </button>
+            </td>
+            <td>{{ getTotalStock(product) }}</td>
+            <td>
+              <button class="btn btn-sm btn-primary" (click)="editProduct(product)">Edit</button>
+              <button class="btn btn-sm btn-danger" (click)="deleteProduct(product)">Delete</button>
+            </td>
+          </tr>
+          <!-- Variant Details -->
+          <tr *ngIf="product.collapsed">
+            <td colspan="6">
+              <div class="variant-details">
+                <h5>Product Variants</h5>
+                <div class="variant-grid">
+                  <div *ngFor="let item of product.productItems" class="variant-card">
+                    <div class="image-gallery">
+                      <img *ngFor="let img of product.images; let first = first" 
+                           [src]="img" alt="Product Image"
+                           class="product-image" [class.main-image]="first">
+                    </div>
+                    <div class="variant-info">
+                      <p><strong>SKU:</strong> {{ item.sku }}</p>
+                      <p><strong>Price:</strong> {{ item.price | currency }}</p>
+                      <p><strong>Stock:</strong> {{ item.stock }}</p>
+                      <p><strong>Status:</strong> 
+                        <span [ngClass]="{
+                          'badge-active': item.status === 'ACTIVE',
+                          'badge-sold-out': item.status === 'SOLDOUT',
+                          'badge-inactive': item.status === 'INACTIVE'
+                        }" class="badge">
+                          {{ item.status | statusDisplay }}
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Product Form Modal -->
+  <div class="modal-overlay" *ngIf="showProductForm">
+    <div class="modal-form">
+      <h2>{{ isEditMode ? 'Edit Product' : 'Add Product' }}</h2>
+      <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+        <!-- Product Information -->
+        <div class="form-section">
+          <h4>Product Information</h4>
+          <div class="form-group">
+            <label>Product Name *</label>
+            <input type="text" formControlName="name" class="form-control">
+            <div *ngIf="productForm.get('name')?.invalid && productForm.get('name')?.touched" class="error-message">
+              Product name is required
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea formControlName="description" class="form-control"></textarea>
+          </div>
+          <!-- Category Selection -->
+          <!-- Hiển thị breadcrumb -->
+          <div class="category-path mb-3">
+            <div class="d-flex flex-wrap gap-2 align-items-center">
+              <ng-container *ngFor="let cat of selectedCategoryPath; let i = index">
+                <span class="badge bg-primary cursor-pointer" 
+                      (click)="onSelectCategory(cat, i)">
+                  {{ cat.name }}
+                </span>
+                <span *ngIf="i < selectedCategoryPath.length - 1" class="text-muted">›</span>
+              </ng-container>
+            </div>
+          </div>
+
+          <!-- Hiển thị danh mục con -->
+          <div class="category-level">
+            <div *ngFor="let category of currentLevelCategories" 
+                class="category-item btn btn-outline-primary"
+                (click)="onSelectCategory(category, selectedCategoryPath.length)">
+              {{ category.name }}
+              <i *ngIf="category.children?.length" class="ms-2 fas fa-chevron-right"></i>
+            </div>
+            
+            <div *ngIf="currentLevelCategories.length === 0" class="text-success mt-2">
+              <i class="fas fa-check-circle"></i> Đã chọn danh mục cuối cùng
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Brand *</label>
+            <select formControlName="brandId" class="form-control">
+              <option value="">Select Brand</option>
+              <option *ngFor="let brand of brands" [value]="brand.id">{{ brand.name }}</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Product Variants -->
+        <div class="form-section">
+          <h4>Product Variants</h4>
+          <div formArrayName="productItems">
+            <div *ngFor="let variant of productItems.controls; let i = index" [formGroupName]="i">
+              <div class="variant-form card mb-3">
+                <div class="card-body">
+                  <!-- Row 1: SKU, Price, Stock -->
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label>SKU *</label>
+                        <input type="text" formControlName="sku" class="form-control">
+                        <div *ngIf="variant.get('sku')?.invalid && variant.get('sku')?.touched" class="error-message">
+                          Vui lòng nhập SKU
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label>Price *</label>
+                        <input type="number" formControlName="price" class="form-control">
+                        <div *ngIf="variant.get('price')?.invalid && variant.get('price')?.touched" class="error-message">
+                          Vui lòng nhập giá
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label>Stock *</label>
+                        <input type="number" formControlName="stock" class="form-control">
+                        <div *ngIf="variant.get('stock')?.invalid && variant.get('stock')?.touched" class="error-message">
+                          Vui lòng nhập tồn kho
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+        
+                  <!-- Row 2: Color, Size, Material -->
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label>Color *</label>
+                        <select formControlName="colorId" class="form-control">
+                          <option value="">Select Color</option>
+                          <option *ngFor="let color of colors" [value]="color.id">{{ color.name }}</option>
+                        </select>
+                        <div *ngIf="variant.get('colorId')?.invalid && variant.get('colorId')?.touched" class="error-message">
+                          Vui lòng chọn màu
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label>Size *</label>
+                        <select formControlName="sizeId" class="form-control">
+                          <option value="">Select Size</option>
+                          <option *ngFor="let size of sizes" [value]="size.id">{{ size.name }}</option>
+                        </select>
+                        <div *ngIf="variant.get('sizeId')?.invalid && variant.get('sizeId')?.touched" class="error-message">
+                          Vui lòng chọn kích thước
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label>Material *</label>
+                        <select formControlName="materialId" class="form-control">
+                          <option value="">Select Material</option>
+                          <option *ngFor="let material of materials" [value]="material.id">{{ material.name }}</option>
+                        </select>
+                        <div *ngIf="variant.get('materialId')?.invalid && variant.get('materialId')?.touched" class="error-message">
+                          Vui lòng chọn chất liệu
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+        
+                  <!-- Row 3: Status -->
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label>Trạng thái *</label>
+                        <select formControlName="status" class="form-control">
+                          <option value="ACTIVE">Hoạt động</option>
+                          <option value="SOLDOUT">Hết hàng</option>
+                          <option value="INACTIVE">Vô hiệu</option>
+                        </select>
+                        <div *ngIf="variant.get('status')?.invalid && variant.get('status')?.touched" class="error-message">
+                          Vui lòng chọn trạng thái
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+        
+                  <!-- Remove button -->
+                  <button type="button" class="btn btn-danger btn-sm mt-2" (click)="removeVariant(i)">Remove Variant</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="btn btn-secondary" (click)="addVariant()">Add Variant</button>
+        </div>
+
+        <!-- Image Upload -->
+        <div class="form-section">
+          <h4>Product Images</h4>
+          <div class="image-grid">
+            <div *ngFor="let img of currentImages; let i = index" class="image-item">
+              <img [src]="img" alt="Product image">
+              <div class="image-overlay">
+                <button type="button" class="btn btn-sm btn-danger" (click)="removeImage(i)">
+                  <i class="ri-delete-bin-line"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="mt-3">
+            <input type="file" multiple accept="image/*" (change)="onFileSelected($event)" class="form-control">
+            <small class="text-muted">First image will be set as main</small>
+          </div>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="form-actions mt-3">
+          <button type="submit" [disabled]="productForm.invalid || loading" class="btn btn-primary">
+            {{ isEditMode ? 'Update' : 'Create' }}
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="cancelForm()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

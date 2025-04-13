@@ -1,0 +1,208 @@
+<aside class="site-off desktop-hide">
+    <div class="off-canvas">
+        <div class="canvas-head flexitem">
+            <div class="logo"><a href=""><span class="circle"></span>.Store</a></div>
+            <a href="#" class="t-close flexcenter"><i class="ri-close-line"></i></a>
+        </div>
+        <div class="departments"></div>
+        <nav></nav>
+        <div class="thetop-nav"></div>
+    </div>
+  </aside>
+  
+  <header>
+      <div class="header-top mobile-hide">
+          <div class="container">
+              <div class="wrapper flexitem">
+                  <div class="left">
+                      <ul class="flexitem main-links">
+                          <li><a href="">Blog</a></li>
+                          <li><a href="">Featured Products</a></li>
+                          <li><a href="">Wishlist</a></li>
+                      </ul>
+                  </div>
+                  <div class="right">
+                      <ul class="flexitem main-links">
+                          <!-- Nếu chưa đăng nhập -->
+                          <ng-container *ngIf="!isLoggedIn; else loggedInTemplate">
+                              <li><a routerLink="/auth/login">Sign in</a></li>
+                              <li><a routerLink="/auth/register">Sign up</a></li>
+                            </ng-container>
+                          
+                            <!-- Nếu đã đăng nhập -->
+                            <ng-template #loggedInTemplate>
+                              <li><a href="#">Hello, {{ userName }}</a></li>
+                              <li><a routerLink="/account">My Account</a></li>
+                              <li><a routerLink="/orders">Order Tracking</a></li>
+                              <li><a href="#" (click)="logout()">Logout</a></li>
+                            </ng-template>
+    
+                          <li><a href="#">USD <span class="icon-small"><i class="ri-arrow-down-wide-fill"></i></span></a>
+                              <ul>
+                                  <li class="current"><a href="">USD</a></li>
+                                  <li><a href="">EURO</a></li>
+                                  <li><a href="">VND</a></li>
+                              </ul>
+                          </li>
+                          <li><a href="#">English <span class="icon-small"><i class="ri-arrow-down-wide-fill"></i></span></a>
+                              <ul>
+                                  <li class="current"><a href="">English</a></li>
+                                  <li><a href="">VietNam</a></li>
+                                  <li><a href="">Bahasa</a></li>
+                              </ul>
+                          </li>
+                      </ul>
+                  </div>                    
+              </div>
+          </div>
+      </div>
+      <!-- header top -->
+       <div class="header-nav">
+          <div class="container">
+              <div class="wrapper flexitem">
+                  <a href="#" class="trigger desktop-hide"><span class="i ri-menu-line"></span></a>
+                  <div class="left flexitem">
+                      <div class="logo"><a href=""><span class="circle"></span>.Store</a></div>
+                      <nav class="mobile-hide">
+                          <ul class="flexitem second-links">
+                              <li><a href="">Home</a></li>
+                              <li><a href="">Shop</a></li>
+                              <li class="has-child" *ngFor="let category of categories">
+                                  <a href="#">
+                                    {{ category.name }}
+                                    <div class="icon-small"><i class="ri-arrow-down-s-line"></i></div>
+                                  </a>
+                                
+                                  <div class="mega" *ngIf="category.children?.length">
+                                    <div class="container">
+                                      <div class="wrapper">
+                                        <div
+                                          class="flexcol"
+                                          *ngFor="let sub of category.children"
+                                        >
+                                          <div class="row">
+                                            <h4>{{ sub.name }}</h4>
+                                            <ul>
+                                              <li *ngFor="let child of sub.children">
+                                                <a href="#">{{ child.name }}</a>
+                                              </li>
+                                            </ul>
+                                          </div>
+                                        </div>
+                                        
+                                        <!-- Block phụ thêm (giống phần view all / media nếu bạn muốn giữ) -->
+                                        <div class="flexcol products">
+                                          <div class="row">
+                                            <div class="media">
+                                              <div class="thumbnail object-cover">
+                                                <a href="">
+                                                  <img src="assets/img/products/apparel4.jpg" alt="">
+                                                </a>
+                                              </div>
+                                            </div>
+                                            <div class="text-content">
+                                              <h4>Most wanted</h4>
+                                              <a href="#" class="primary-button">order now</a>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                              </li>                              
+                              <li><a href="">Sports
+                                  <div class="fly-item"><span>New!</span></div>
+                              </a></li>
+                          </ul>
+                      </nav>
+                  </div>
+                  <div class="right">
+                      <ul class="flexitem second-links">
+                          <li class="mobile-hide"><a href="">
+                              <div class="icon-large">
+                                  <i class="ri-heart-line"></i>
+                                  <div class="fly-item"><span class="item-number">0</span></div>
+                              </div>
+                          </a></li>
+                          <li><a href="" class="iscart">
+                              <div class="icon-large">
+                                  <i class="ri-shopping-cart-line"></i>
+                                  <div class="fly-item"><span class="item-number">0</span></div>
+                              </div>
+                              <div class="icon-text">
+                                  <div class="mini-text">Total</div>
+                                  <div class="cart-total">$2.3</div>
+                              </div>
+                          </a></li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+       </div>
+  
+       <div class="header-main mobile-hide">
+          <div class="container">
+              <div class="wrapper flexitem">
+                  <div class="left">
+                      <div class="dpt-cat">
+                          <div class="dpt-head">
+                              <div class="main-text">All Departments</div>
+                              <div class="mini-text mobile-hide">Total 1022 Products</div>
+                              <a href="" class="dpt-trigger mobile-hide"><i class="ri-menu-3-line ri-xl"></i></a>
+                          </div>
+                          <div class="dpt-menu">
+                              <ul class="second-links">
+                                  
+                                  <li *ngFor="let category of categories" class="has-child homkit">
+                                      <a [routerLink]="['/category', category.id]">
+                                        <div class="icon-large"><i [class]="category.icon || 'ri-home-8-line'"></i></div>
+                                        {{ category.name }}
+                                        <div class="icon-small" *ngIf="category.children?.length">
+                                          <i class="ri-arrow-right-s-line"></i>
+                                        </div>
+                                      </a>
+                                    
+                                      <!-- Mega menu cấp 1 -->
+                                      <div class="mega" *ngIf="category.children && category.children.length > 0"
+                                          >
+                                        <div class="flexcol">
+                                          <div class="row" *ngFor="let child of category.children">
+                                            <h4>{{ child.name }}</h4>
+                                            <ul>
+                                              <li *ngIf="!child.children?.length">
+                                                <a [routerLink]="['/category', child.id]">{{ child.name }}</a>
+                                              </li>
+                                              <li *ngFor="let sub of child.children">
+                                                <a [routerLink]="['/category', sub.id]">{{ sub.name }}</a>
+                                              </li>
+                                            </ul>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </li>
+                                    
+  
+                                  <li>
+                                      <a href="#">
+                                          <div class="icon-large"><i class="ri-basketball-line"></i></div>
+                                          Best Seller
+                                      </a>
+                                  </li>
+                              </ul>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="right">
+                      <div class="search-box">
+                          <form action="" class="search">
+                              <span class="icon-large"><i class="ri-search-line"></i></span>
+                              <input type="text" placeholder="Search for product">
+                              <button type="submit">Search</button>
+                          </form>
+                      </div>
+                  </div>
+              </div>
+          </div>
+       </div>
+  
+  </header>
