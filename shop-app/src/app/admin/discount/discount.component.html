@@ -1,0 +1,35 @@
+<!-- admin/discounts/discounts.component.html -->
+<div class="header">
+    <h2>Quản lý Discount</h2>
+    <button routerLink="/admin/discounts/new" class="btn btn-primary">
+      Tạo Discount mới
+    </button>
+  </div>
+  
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Tên</th>
+        <th>Loại</th>
+        <th>Giá trị</th>
+        <th>Áp dụng cho</th>
+        <th>Ngày bắt đầu</th>
+        <th>Ngày kết thúc</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let discount of discounts$ | async">
+        <td>{{ discount.name }}</td>
+        <td>{{ discount.type }}</td>
+        <td>{{ discount.value | currency }}</td>
+        <td>{{ discount.applicableTo }}</td>
+        <td>{{ discount.startDate | date }}</td>
+        <td>{{ discount.endDate | date }}</td>
+        <td>
+          <button [routerLink]="['/admin/discounts/edit', discount.id]">Sửa</button>
+          <button (click)="deleteDiscount(discount.id)">Xóa</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>

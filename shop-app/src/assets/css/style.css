@@ -1395,6 +1395,9 @@ form.search button:hover{
 }
 
 /* product reivew */
+.description.collapse{
+    display: block !important;
+}
 .products .collapse .has-child > a{
     position: relative;
     font-weight: var(--fw7);
@@ -1788,6 +1791,7 @@ input[type ="range"]::-webkit-slider-thumb {
 .iscart:hover .mini-cart {
     visibility: visible;
     opacity: 1;
+    transition: all 0.3s ease;
 }
 
 :is(.mini-cart .products, .products.cart, .checkout .products) .thumbnail img{

@@ -9,6 +9,7 @@ import { ColorComponent } from './color/color.component';
 import { CategoryComponent } from './category/category.component';
 import { MaterialComponent } from './material/material.component';
 import { ProductListComponent } from './product-list/product-list.component';
+import { DiscountComponent } from './discount/discount.component';
 
 export const ADMIN_ROUTES: Routes = [
   {
@@ -23,7 +24,8 @@ export const ADMIN_ROUTES: Routes = [
       { path: 'category', component: CategoryComponent },
       { path: 'user', component: UsersComponent },
       { path: 'material', component: MaterialComponent },
-      { path: 'products', component: ProductListComponent}
+      { path: 'products', component: ProductListComponent},
+      { path: 'discount', component: DiscountComponent}
     ]
   }
 ];

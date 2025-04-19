@@ -8,13 +8,24 @@ import { FooterComponent } from '../shared/footer/footer.component';
 import { RouterOutlet } from '@angular/router';
 import { Subscription } from 'rxjs';
 
+interface CartItem {
+  id: number;
+  name: string;
+  price: number;
+  qty: number;
+  imageUrl: string;
+};
+
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [CommonModule, HeaderComponent, FooterComponent, RouterOutlet],
   templateUrl: './home.component.html',
+  styleUrl: './home.component.css'
 })
+
 export class HomeComponent implements OnInit {
+  
   isLoggedIn = false;
   userName = '';
   // Biến pageClass dùng để binding vào class của container
@@ -57,4 +68,32 @@ export class HomeComponent implements OnInit {
       queryParams: { returnUrl: this.router.url }
     });
   }
+
+  isCartOpen = false;
+
+  // giả lập dữ liệu giỏ hàng
+  cartItems: CartItem[] = [
+    { id: 1, name: 'Dimmable ceiling light modern', price: 278.32, qty: 2, imageUrl: 'assets/img/light1.jpg' },
+    { id: 2, name: 'Wooden table lamp',           price: 120.00, qty: 1, imageUrl: 'assets/img/lamp2.jpg' }
+  ];
+
+  isMiniCartOpen = false;
+
+
+  // toggle khi click icon Cart
+  toggleMiniCart() {
+    this.isMiniCartOpen = !this.isMiniCartOpen;
+  }
+
+  // nếu cần đóng khi click ra ngoài hoặc hover out
+  closeMiniCart() {
+    this.isMiniCartOpen = false;
+  }
+
+  // tính subtotal
+  get subtotal(): number {
+    return this.cartItems.reduce((sum, i) => sum + i.price * i.qty, 0);
+  }
+
+
 }
