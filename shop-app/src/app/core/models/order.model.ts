@@ -29,4 +29,11 @@ export interface OrderItemResponse {
     discountAmount?: number;
     orderItems: OrderItemResponse[];
   }
-  
+  export interface OrderRequest {
+    addressId: number;
+    discountId?: number;
+    orderItems: Array<{
+      productItemId: number;
+      quantity: number;
+    }>;
+  }

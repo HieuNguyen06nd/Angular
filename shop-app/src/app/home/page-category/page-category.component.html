@@ -9,46 +9,18 @@
                             <div class="filter-block">
                                 <h4>Category</h4>
                                 <ul>
-                                    <li>
-                                        <input type="checkbox" name="checkbox" id="bags">
-                                        <label for="bags">
+                                    <li  *ngFor="let c of categories">
+                                        <input
+                                        type="checkbox"
+                                        [id]="'cat-' + c.id"
+                                        [checked]="c.id === categoryId"
+                                        (change)="onSelectCategory(c.id)"
+                                      />
+                                      <label [for]="'cat-' + c.id">
                                             <span class="checked"></span>
-                                            <span>Bags</span>
+                                            <span>{{ c.name }}</span>
                                         </label>
-                                        <span class="count">15</span>
-                                    </li>
-
-                                    <li>
-                                        <input type="checkbox" name="checkbox" id="beauty">
-                                        <label for="beauty">
-                                            <span class="checked"></span>
-                                            <span>beauty</span>
-                                        </label>
-                                        <span class="count">15</span>
-                                    </li>
-                                    <li>
-                                        <input type="checkbox" name="checkbox" id="clothing">
-                                        <label for="clothing">
-                                            <span class="checked"></span>
-                                            <span>clothing</span>
-                                        </label>
-                                        <span class="count">15</span>
-                                    </li>
-                                    <li>
-                                        <input type="checkbox" name="checkbox" id="jewelry">
-                                        <label for="jewelry">
-                                            <span class="checked"></span>
-                                            <span>jewelry</span>
-                                        </label>
-                                        <span class="count">15</span>
-                                    </li>
-                                    <li>
-                                        <input type="checkbox" name="checkbox" id="shoes">
-                                        <label for="shoes">
-                                            <span class="checked"></span>
-                                            <span>shoes</span>
-                                        </label>
-                                        <span class="count">15</span>
+                                        <!-- <span class="count">({{ c.productCount }})</span> -->
                                     </li>
                                 </ul>
                             </div>
@@ -89,15 +61,16 @@
                             <div class="cat-head">
                                 <div class="breadcrumb" >
                                     <ul class="flexitem">
-                                        <li><a href="">Home</a></li>
-                                        <li>Women</li>
+                                        <li><a href="/">Home</a></li>
+                                        <li>{{ categoryName }}</li>
                                     </ul>
                                 </div>
+
                                 <div class="page-title">
-                                    <h1>Women</h1>
+                                    <h1>{{ categoryName }}</h1>
                                 </div>
                                 <div class="cat-description">
-                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Numquam amet modi repudiandae nihil reprehenderit impedit ipsum, tempora eveniet sint sequi ullam ad qui molestias deleniti libero sunt excepturi, quisquam omnis</p>
+                                    <p>Moo ta</p>
                                 </div>
                                 <div class="cat-navigation flexitem">
                                     <div class="item-filter destop-hide">
@@ -140,12 +113,12 @@
                             </div>
                         </div>
                         <div class="products main flexwrap">
-                            <div class="item">
+                            <div class="item" *ngFor="let p of products">
                                 <div class="media">
                                     <div class="thumbnail object-cover">
-                                        <a href="#">
-                                            <img src="/assets/img/products/apparel1.jpg" alt="">
-                                        </a>
+                                        <a [routerLink]="['/product', p.id]">
+                                            <img [src]="p.images[0]" [alt]="p.name" />
+                                          </a>
                                     </div>
                                     <div class="hoverable">
                                         <ul>
@@ -154,17 +127,21 @@
                                             <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
                                         </ul>
                                     </div>
-                                    <div class="discount circle flexcenter"><span>50%</span></div>
+                                    <div *ngIf="p.productItems[0]?.discountPercent" class="discount circle flexcenter">
+                                        <span>{{ p.productItems[0].discountPercent }}%</span>
+                                    </div>
                                 </div>
                                 <div class="content">
                                     <div class="rating">
                                         <div class="stars"></div>
                                         <span class="mini-text">(2.343)</span>
                                     </div>
-                                    <h3 ><a href="#">Happy holiday Summer</a></h3>
+                                    <h3><a [routerLink]="['/product', p.id]">{{ p.name }}</a></h3>
                                     <div class="price">
-                                        <span class="current">$123.2</span>
-                                        <span class="normal mini-text">$150.32</span>
+                                        <span class="current"> {{ p.productItems[0].newPrice || p.productItems[0].price | currency:'VND':'symbol':'1.0-0' }}</span>
+                                        <span *ngIf="p.productItems[0].discountPercent" class="normal mini-text">
+                                            {{ p.productItems[0].price | currency:'VND':'symbol':'1.0-0' }}
+                                          </span>
                                     </div>
                                     <div class="footer">
                                         <ul class="mini-text">
@@ -175,183 +152,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="item">
-                                <div class="media">
-                                    <div class="thumbnail object-cover">
-                                        <a href="#">
-                                            <img src="/assets/img/products/apparel2.jpg" alt="">
-                                        </a>
-                                    </div>
-                                    <div class="hoverable">
-                                        <ul>
-                                            <li class="active"><a href=""><i class="ri-heart-line"></i></a></li>
-                                            <li><a href="#"><i class="ri-eye-line"></i></a></li>
-                                            <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="discount circle flexcenter"><span>50%</span></div>
-                                </div>
-                                <div class="content">
-                                    <div class="rating">
-                                        <div class="stars"></div>
-                                        <span class="mini-text">(2.343)</span>
-                                    </div>
-                                    <h3 ><a href="#">Happy holiday Summer</a></h3>
-                                    <div class="price">
-                                        <span class="current">$123.2</span>
-                                        <span class="normal mini-text">$150.32</span>
-                                    </div>
-                                
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="media">
-                                    <div class="thumbnail object-cover">
-                                        <a href="#">
-                                            <img src="/assets/img/products/apparel1.jpg" alt="">
-                                        </a>
-                                    </div>
-                                    <div class="hoverable">
-                                        <ul>
-                                            <li class="active"><a href=""><i class="ri-heart-line"></i></a></li>
-                                            <li><a href="#"><i class="ri-eye-line"></i></a></li>
-                                            <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="discount circle flexcenter"><span>50%</span></div>
-                                </div>
-                                <div class="content">
-                                    <div class="rating">
-                                        <div class="stars"></div>
-                                        <span class="mini-text">(2.343)</span>
-                                    </div>
-                                    <h3 ><a href="#">Happy holiday Summer</a></h3>
-                                    <div class="price">
-                                        <span class="current">$123.2</span>
-                                        <span class="normal mini-text">$150.32</span>
-                                    </div>
-                                
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="media">
-                                    <div class="thumbnail object-cover">
-                                        <a href="#">
-                                            <img src="/assets/img/products/shoe3.jpg" alt="">
-                                        </a>
-                                    </div>
-                                    <div class="hoverable">
-                                        <ul>
-                                            <li class="active"><a href=""><i class="ri-heart-line"></i></a></li>
-                                            <li><a href="#"><i class="ri-eye-line"></i></a></li>
-                                            <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="discount circle flexcenter"><span>50%</span></div>
-                                </div>
-                                <div class="content">
-                                    <div class="rating">
-                                        <div class="stars"></div>
-                                        <span class="mini-text">(2.343)</span>
-                                    </div>
-                                    <h3 ><a href="#">Happy holiday Summer</a></h3>
-                                    <div class="price">
-                                        <span class="current">$123.2</span>
-                                        <span class="normal mini-text">$150.32</span>
-                                    </div>
-                                
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="media">
-                                    <div class="thumbnail object-cover">
-                                        <a href="#">
-                                            <img src="/assets/img/products/apparel1.jpg" alt="">
-                                        </a>
-                                    </div>
-                                    <div class="hoverable">
-                                        <ul>
-                                            <li class="active"><a href=""><i class="ri-heart-line"></i></a></li>
-                                            <li><a href="#"><i class="ri-eye-line"></i></a></li>
-                                            <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="discount circle flexcenter"><span>50%</span></div>
-                                </div>
-                                <div class="content">
-                                    <div class="rating">
-                                        <div class="stars"></div>
-                                        <span class="mini-text">(2.343)</span>
-                                    </div>
-                                    <h3 ><a href="#">Happy holiday Summer</a></h3>
-                                    <div class="price">
-                                        <span class="current">$123.2</span>
-                                        <span class="normal mini-text">$150.32</span>
-                                    </div>
-                                
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="media">
-                                    <div class="thumbnail object-cover">
-                                        <a href="#">
-                                            <img src="/assets/img/products/apparel1.jpg" alt="">
-                                        </a>
-                                    </div>
-                                    <div class="hoverable">
-                                        <ul>
-                                            <li class="active"><a href=""><i class="ri-heart-line"></i></a></li>
-                                            <li><a href="#"><i class="ri-eye-line"></i></a></li>
-                                            <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="discount circle flexcenter"><span>50%</span></div>
-                                </div>
-                                <div class="content">
-                                    <div class="rating">
-                                        <div class="stars"></div>
-                                        <span class="mini-text">(2.343)</span>
-                                    </div>
-                                    <h3 ><a href="#">Happy holiday Summer</a></h3>
-                                    <div class="price">
-                                        <span class="current">$123.2</span>
-                                        <span class="normal mini-text">$150.32</span>
-                                    </div>
-                                
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="media">
-                                    <div class="thumbnail object-cover">
-                                        <a href="#">
-                                            <img src="/assets/img/products/shoe3.jpg" alt="">
-                                        </a>
-                                    </div>
-                                    <div class="hoverable">
-                                        <ul>
-                                            <li class="active"><a href=""><i class="ri-heart-line"></i></a></li>
-                                            <li><a href="#"><i class="ri-eye-line"></i></a></li>
-                                            <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="discount circle flexcenter"><span>50%</span></div>
-                                </div>
-                                <div class="content">
-                                    <div class="rating">
-                                        <div class="stars"></div>
-                                        <span class="mini-text">(2.343)</span>
-                                    </div>
-                                    <h3 ><a href="#">Happy holiday Summer</a></h3>
-                                    <div class="price">
-                                        <span class="current">$123.2</span>
-                                        <span class="normal mini-text">$150.32</span>
-                                    </div>
-                                
-                                </div>
-                            </div>
                         </div>
                         <div class="flexcenter load-more ">
-                            <a href="" class="secondary-button">Load more</a>
+                            <button class="secondary-button" (click)="loadMore()">Load more</button>
                         </div>
                     </div>
                 </div>

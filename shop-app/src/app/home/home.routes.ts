@@ -5,6 +5,8 @@ import { HomeLayoutComponent } from './home-layout/home-layout.component';
 import { PageCategoryComponent } from './page-category/page-category.component';
 import { PageOfferComponent } from './page-offer/page-offer.component';
 import { PageCheckoutComponent } from './page-checkout/page-checkout.component';
+import { PageCartComponent } from './page-cart/page-cart.component';
+import { PageAccountComponent } from './page-account/page-account.component';
 
 
 export const HOME_ROUTES: Routes = [
@@ -16,7 +18,13 @@ export const HOME_ROUTES: Routes = [
       { path: 'product/:id', component: ProductDetailComponent },
       { path: 'product/category/:id', component: PageCategoryComponent },
       { path: 'product/offer/:id', component: PageOfferComponent},
-      { path: 'product/checkout/:id', component: PageCheckoutComponent },
+     // ROUTE CHO GIỎ HÀNG
+     { path: 'cart', component: PageCartComponent },
+     // ROUTE CHO THANH TOÁN
+     { path: 'checkout', component: PageCheckoutComponent },
+     { path: 'account/:id', component: PageAccountComponent },
+     // nếu cần: redirect không tìm thấy
+     { path: '**', redirectTo: '' }
     ]
   }
 ];

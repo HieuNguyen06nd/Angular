@@ -35,14 +35,17 @@ export class AuthService {
     ).pipe(
       tap(response => {
         if (response.status === 200) {
-          this.handleLoginSuccess(response.data.token);
+          this.handleLoginSuccess(response.data.token,
+            response.data.userId 
+          );
         }
       })
     );
   }
 
-  private handleLoginSuccess(token: string): void {
+  private handleLoginSuccess(token: string,  userId: number): void {
     this.storageService.setItem('token', token);
+    this.storageService.setItem('userId', userId.toString());
     const user = this.decodeToken(token);
     if (user) {
       this.storageService.setItem('user', JSON.stringify(user));

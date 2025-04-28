@@ -89,3 +89,10 @@
     color: #dc3545;
     margin-left: 5px;
   }
+
+  .error-message {
+    color: #dc3545; /* Màu đỏ */
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    z-index: 1001;
+  }

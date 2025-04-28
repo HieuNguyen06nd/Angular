@@ -16,6 +16,7 @@ export interface RegisterRequest {
     message: string;
     data: {
       token: string;
+      userId: number;
     };
   }
   

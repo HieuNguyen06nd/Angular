@@ -1,139 +1,142 @@
 <div class="single-checkout">
     <div class="container">
-        <div class="wrapper">
-            <div class="checkout flexwrap">
-                <div class="item left styled">
-                    <h1>Shipping Address</h1>
-                    <form action="">
-                        <p>
-                            <label for="email">Email Address <span></span></label>
-                            <input type="email" name="email" id="email" autocomplete="off" required>
-                        </p>
-                        <p>
-                            <label for="fname">Fist Name <span></span></label>
-                            <input type="text" id="fname">
-                        </p>
-                        <p>
-                            <label for="lname">Last Name <span></span></label>
-                            <input type="text" id="lname">
-                        </p>
-                        <p>
-                            <label for="cname">Company Name </label>
-                            <input type="text" id="cname">
-                        </p>
-                        <p>
-                            <label for="address">Street Address<span></span></label>
-                            <input type="text" id="address" required>
-                        </p>
-                        <p>
-                            <label for="city">City</label>
-                            <input type="text" id="city" required>
-                        </p>
-                        <p>
-                            <label for="state">Satte/Province </label>
-                            <input type="text" id="state" required>
-                        </p>
-                        <p>
-                            <label for="postal">Zip / Postal Code</label>
-                            <input type="number" id="postal" required>
-                        </p>
-                        <p>
-                            <label for="country">Country</label>
-                            <select name="" id="">
-                                <option value="">Ha Noi</option>
-                                <option value="">Nam Dinh</option>
-                                <option value=""></option>
-                                <option value="">Others</option>
-                            </select>
-                        </p>
-                        <p>
-                            <label for="phone">Phone Number</label>
-                            <input type="number" id="phone" required>
-                        </p>
-                        <p>
-                            <label for="">Order Notes (optional)</label>
-                            <textarea cols="30" rows="10"></textarea>
-                        </p>
-                        <p class="checkset">
-                            <input type="checkbox" id="anaccount">
-                            <label for="anaccount">Create an account?</label>
-                        </p>
-                    </form>
-                    <div class="shipping-methods">
-                        <h2>Shipping Me</h2>
-                        <p class="checkset">
-                            <input type="radio" checked>
-                            <label>$5.00 Flate Rate</label>
-                        </p>
-                    </div>
-                    <div class="primary-checkout">
-                        <button class="primary-button">Place Order</button>
-                    </div>
-                </div>
-                <div class="item right">
-                    <h2>Order Summary</h2>
-                    <div class="summary-order is_sticky">
-                        <div class="summary-totals">
-                            <ul>
-                                <li>
-                                    <span>Subtotal</span>
-                                    <span>$2155.25</span>
-                                </li>
-                                <li>
-                                    <span>Discount</span>
-                                    <span>-#100.00</span>
-                                </li>
-                                <li>
-                                    <span>Shipping: Flat</span>
-                                    <span>$10.00</span>
-                                </li>
-                                <li>
-                                    <span>Total</span>
-                                    <span>$2065.02</span>
-                                </li>
-                            </ul>
-                        </div>
-                        <ul class="products mini">
-                            <li class="item">
-                                <div class="thumbnail object-cover">
-                                    <img src="assets/img/products/home3.jpg" alt="">
-                                </div>
-                                <div class="item-content">
-                                    <p>Dimmable Ceiling Light Modern</p>
-                                    <span class="price">
-                                        <span>$247</span>
-                                        <span>x 2</span>
-                                    </span>
-                                </div>
-                            </li>
-                            <li class="item">
-                                <div class="thumbnail object-cover">
-                                    <img src="assets/img/products/home5.jpg" alt="">
-                                </div>
-                                <div class="item-content">
-                                    <p>Dimmable Ceiling Light Modern</p>
-                                    <span class="price">
-                                        <span>$247</span>
-                                        <span>x 2</span>
-                                    </span>
-                                </div>
-                            </li>
-                            <li class="item">
-                                <div class="thumbnail object-cover">
-                                    <img src="assets/img/products/home2.jpg" alt="">
-                                </div>
-                                <div class="item-content">
-                                    <p>Dimmable Ceiling Light Modern</p>
-                                    <span class="price">
-                                        <span>$247</span>
-                                        <span>x 2</span>
-                                    </span>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+      <div class="wrapper">
+        <div class="checkout flexwrap">
+  
+          <!-- LEFT: Shipping Address -->
+          <div class="item left styled">
+            <h1>Shipping Address</h1>
+  
+            <!-- Hiện địa chỉ chọn sẵn khi không đang edit -->
+            <div *ngIf="selectedAddress && !isEditing" class="address-box">
+              <div class="address-header">
+                <h4>{{ selectedAddress.fullName }}</h4>
+                <span *ngIf="selectedAddress.isDefault" class="default-badge">Mặc định</span>
+              </div>
+              <p>{{ selectedAddress.detail }}, {{ selectedAddress.ward }}, {{ selectedAddress.district }}, {{ selectedAddress.province }}</p>
+              <p>Điện thoại: {{ selectedAddress.phone }}</p>
+              <button class="btn btn-sm btn-secondary" (click)="editAddress()">
+                Chọn địa chỉ khác
+              </button>
             </div>
+  
+            <!-- Form chỉnh sửa/nhập mới địa chỉ -->
+            <form *ngIf="isEditing" [formGroup]="addressForm" (ngSubmit)="saveAddress()" novalidate>
+              <button type="button" class="close-button" (click)="isEditing = false">×</button>
+  
+              <p>
+                <label for="fullName">Full Name <span class="text-danger">*</span></label>
+                <input id="fullName" formControlName="fullName" class="form-control" />
+                <small class="text-danger" *ngIf="addressForm.get('fullName')?.invalid && addressForm.get('fullName')?.touched">
+                  Vui lòng nhập họ tên
+                </small>
+              </p>
+  
+              <p>
+                <label for="phone">Phone Number <span class="text-danger">*</span></label>
+                <input id="phone" formControlName="phone" class="form-control" />
+                <small class="text-danger" *ngIf="addressForm.get('phone')?.errors?.['required']">
+                  Vui lòng nhập số điện thoại
+                </small>
+                <small class="text-danger" *ngIf="addressForm.get('phone')?.errors?.['pattern']">
+                  Số điện thoại không hợp lệ
+                </small>
+              </p>
+  
+              <p>
+                <label for="province">Tỉnh/Thành phố <span class="text-danger">*</span></label>
+                <select id="province" formControlName="province" class="form-select"
+                        (ngModelChange)="onProvinceChange($event)">
+                  <option value="" disabled>Chọn tỉnh/thành phố</option>
+                  <option *ngFor="let p of provinces" [value]="p">{{ p }}</option>
+                </select>
+              </p>
+  
+              <p>
+                <label for="district">Quận/Huyện <span class="text-danger">*</span></label>
+                <select id="district" formControlName="district" class="form-select"
+                        (ngModelChange)="onDistrictChange($event)">
+                  <option value="" disabled>Chọn quận/huyện</option>
+                  <option *ngFor="let d of districts" [value]="d">{{ d }}</option>
+                </select>
+              </p>
+  
+              <p>
+                <label for="ward">Phường/Xã <span class="text-danger">*</span></label>
+                <select id="ward" formControlName="ward" class="form-select">
+                  <option value="" disabled>Chọn phường/xã</option>
+                  <option *ngFor="let w of wards" [value]="w">{{ w }}</option>
+                </select>
+              </p>
+  
+              <p>
+                <label for="detail">Street Address <span class="text-danger">*</span></label>
+                <input id="detail" formControlName="detail" class="form-control" />
+              </p>
+  
+              <p class="checkset">
+                <input type="checkbox" formControlName="isDefault" id="isDefault" />
+                <label for="isDefault">Đặt làm địa chỉ mặc định?</label>
+              </p>
+  
+              <div class="primary-checkout">
+                <button type="submit" class="primary-button">
+                  Lưu địa chỉ
+                </button>
+              </div>
+            </form>
+  
+            <!-- Khi đã có địa chỉ và không edit: nút đặt hàng -->
+            <div class="primary-checkout" *ngIf="!isEditing && selectedAddress">
+              <button class="primary-button" (click)="placeOrder()">
+                Đặt hàng
+              </button>
+            </div>
+          </div>
+  
+          <!-- RIGHT: Order Summary -->
+          <div class="item right">
+            <h2>Order Summary</h2>
+            <div class="summary-order is_sticky">
+              <div class="summary-totals">
+                <ul>
+                  <li>
+                    <span>Subtotal</span>
+                    <span>{{ orderSummary.subtotal | currency:'VND':'symbol':'1.0-0' }}</span>
+                  </li>
+                  <li>
+                    <span>Discount</span>
+                    <span>{{ orderSummary.discount | currency:'VND':'symbol':'1.0-0' }}</span>
+                  </li>
+                  <li>
+                    <span>Shipping: Flat</span>
+                    <span>{{ orderSummary.shippingFee | currency:'VND':'symbol':'1.0-0' }}</span>
+                  </li>
+                  <li>
+                    <span>Total</span>
+                    <span>{{ orderSummary.total | currency:'VND':'symbol':'1.0-0' }}</span>
+                  </li>
+                </ul>
+              </div>
+              <ul class="products mini">
+                <li class="item" *ngFor="let ci of selectedItems">
+                  <div class="thumbnail object-cover">
+                    <img [src]="ci.imgUrl" [alt]="ci.name" />
+                  </div>
+                  <div class="item-content">
+                    <p>{{ ci.name }}</p>
+                    <span class="price">
+                      <span>{{ ci.price | currency:'VND':'symbol':'1.0-0' }}</span>
+                      <span>x {{ ci.quantity }}</span>
+                    </span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+  
         </div>
+      </div>
     </div>
-</div>
+  </div>
+  

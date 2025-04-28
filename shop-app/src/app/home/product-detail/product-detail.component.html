@@ -45,6 +45,7 @@
                     <div class="row">
                         <div class="item">
                             <h1>{{ product.name }}</h1>
+                            <form [formGroup]="productForm" (ngSubmit)="onSubmit($event)">
                             <div class="content">
                                 <div class="rating">
                                     <div class="stars"></div>
@@ -61,25 +62,36 @@
                                 </div>
                                 <!-- Phần màu sắc -->
                                 <div class="color-picker">
-                                    <h3>Màu sắc</h3>
-                                    <div class="color-options">
-                                    <div 
-                                        *ngFor="let color of uniqueColors; trackBy: trackByColorId"
-                                        class="color-option"
-                                        [class.selected]="productForm.value.selectedColor === color.colorId"
-                                        [style.backgroundColor]="color.hexCode"
-                                        (click)="productForm.patchValue({ selectedColor: color.colorId })"
-                                    >
-                                        <span class="color-name">{{ color.colorName }}</span>
-                                    </div>
-                                    </div>
-                                </div>
+                                  <h3>Màu sắc</h3>
+                                  <div class="color-options">
+                                      <div 
+                                          *ngFor="let color of uniqueColors; trackBy: trackByColorId"
+                                          class="color-option"
+                                          [class.selected]="productForm.value.selectedColor === color.colorId"
+                                          [style.backgroundColor]="color.hexCode"
+                                          (click)="
+                                              productForm.patchValue({ selectedColor: color.colorId });
+                                              productForm.get('selectedColor')?.markAsTouched()
+                                          "
+                                      >
+                                          <span class="color-name">{{ color.colorName }}</span>
+                                      </div>
+                                      <!-- Sửa điều kiện hiển thị lỗi -->
+                                      <div 
+                                          *ngIf="productForm.get('selectedColor')?.invalid 
+                                              && productForm.get('selectedColor')?.touched" 
+                                          class="error-message"
+                                      >
+                                          Vui lòng chọn màu sắc!
+                                      </div>
+                                  </div>
+                              </div>
                                 
                                 <!-- Phần size -->
                                 <div class="size-picker" *ngIf="availableSizes.length">
                                     <h3>Kích thước</h3>
                                     <div class="size-options">
-                                    <button 
+                                    <button  type="button"
                                         *ngFor="let size of availableSizes; trackBy: trackBySizeId"
                                         [class.selected]="productForm.value.selectedSize === size.sizeId"
                                         (click)="productForm.patchValue({ selectedSize: size.sizeId })"
@@ -87,18 +99,25 @@
                                         {{ size.sizeName }}
                                         <span *ngIf="!isSizeAvailable(size.sizeId)" class="stock-label">(Hết hàng)</span>
                                     </button>
+
+                                    <div *ngIf="productForm.get('selectedSize')?.invalid && (productForm.get('selectedSize')?.dirty || productForm.get('selectedSize')?.touched)" 
+                                          class="error-message">
+                                      Vui lòng chọn kích thước!
+                                    </div>
                                     </div>
                                 </div>
                                 
                                 <!-- Hiển thị màu đã chọn -->
                                 <div class="selected-color" [style.backgroundColor]="selectedColorHex"></div>
                                 <div class="actions">
-                                    <div class="qty-control flexitem">
-                                        <button class="minus circle">-</button>
-                                        <input type="text" value="1">
-                                        <button class="plus circle">+</button>
+                                  <div class="qty-control flexitem">
+                                    <button type="button" (click)="patchQty(-1)">-</button>
+                                    <input formControlName="quantity" type="text" min="1" />
+                                    <button type="button" (click)="patchQty(1)">+</button>
+                                  </div>
+                                    <div class="button-cart">
+                                      <button  type="submit" class="primary-button" [disabled]="productForm.invalid">Add to cart</button>
                                     </div>
-                                    <div class="button-cart"><button class="primary-button">Add to cart</button></div>
                                     <div class="wish-share">
                                         <ul class="flexitem second-links">
                                             <li>
@@ -266,6 +285,7 @@
                                   </div>
                                   
                             </div>
+                            </form>
                         </div>
                     </div>
                 </div>

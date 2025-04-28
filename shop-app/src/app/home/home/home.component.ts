@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
 import { AuthService } from '../../core/services/auth.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
@@ -7,14 +7,10 @@ import { HeaderComponent } from '../shared/header/header.component';
 import { FooterComponent } from '../shared/footer/footer.component';
 import { RouterOutlet } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { Cart } from '../../core/models/cart.model';
+import { CartService } from '../../core/services/cart.service';
+import { isPlatformBrowser } from '@angular/common';
 
-interface CartItem {
-  id: number;
-  name: string;
-  price: number;
-  qty: number;
-  imageUrl: string;
-};
 
 @Component({
   selector: 'app-home',
@@ -24,15 +20,26 @@ interface CartItem {
   styleUrl: './home.component.css'
 })
 
+
+
 export class HomeComponent implements OnInit {
+
   
   isLoggedIn = false;
   userName = '';
   // Biến pageClass dùng để binding vào class của container
   pageClass = 'site';
   private routerSub: Subscription;
+  private cartSub!: Subscription;
+  cart: Cart | null = null;
+  private platformId: Object;
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService, 
+    private cartService: CartService,
+    private router: Router,
+    @Inject(PLATFORM_ID) platformId: Object) 
+    {
+    this.platformId = platformId;
     this.routerSub = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
@@ -46,7 +53,8 @@ export class HomeComponent implements OnInit {
     });
   }
   ngOnDestroy() {
-    this.routerSub.unsubscribe(); // Hủy đăng ký để tránh rò rỉ bộ nhớ
+    this.routerSub?.unsubscribe();
+    this.cartSub?.unsubscribe();
   }
 
   ngOnInit(): void {
@@ -61,6 +69,40 @@ export class HomeComponent implements OnInit {
         }
       });
     }
+
+     // gọi cart ở đây
+     if (isPlatformBrowser(this.platformId)) {
+      this.cartSub = this.cartService.cart$.subscribe(cart => {
+        this.cart = cart;
+      });
+
+      const userId = Number(localStorage.getItem('userId'));
+      if (userId) {
+        this.cartService.loadCart(userId).subscribe({
+          error: err => console.error('Lỗi loadCart:', err)
+        });
+      }
+    }
+
+    this.isLoggedIn = this.authService.isLoggedIn();
+    if (this.isLoggedIn) {
+      this.authService.getUserProfile().subscribe({
+        next: r => this.userName = r.data.fullName || 'User',
+        error: err => console.error('Lỗi profile:', err)
+      });
+    }
+  }
+
+  onRemoveItem(itemId: number, event: MouseEvent): void {
+    event.preventDefault();
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    const userId = Number(localStorage.getItem('userId'));
+    if (!userId) return;
+
+    this.cartService.removeItem(userId, itemId).subscribe({
+      error: err => console.error('Xóa thất bại:', err)
+    });
   }
 
   navigateToLogin() {
@@ -71,11 +113,7 @@ export class HomeComponent implements OnInit {
 
   isCartOpen = false;
 
-  // giả lập dữ liệu giỏ hàng
-  cartItems: CartItem[] = [
-    { id: 1, name: 'Dimmable ceiling light modern', price: 278.32, qty: 2, imageUrl: 'assets/img/light1.jpg' },
-    { id: 2, name: 'Wooden table lamp',           price: 120.00, qty: 1, imageUrl: 'assets/img/lamp2.jpg' }
-  ];
+  
 
   isMiniCartOpen = false;
 
@@ -89,11 +127,5 @@ export class HomeComponent implements OnInit {
   closeMiniCart() {
     this.isMiniCartOpen = false;
   }
-
-  // tính subtotal
-  get subtotal(): number {
-    return this.cartItems.reduce((sum, i) => sum + i.price * i.qty, 0);
-  }
-
 
 }

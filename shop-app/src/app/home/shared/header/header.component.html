@@ -126,47 +126,51 @@
                               </div>
                             </a>
                           </li>
-                          <li  class="iscart">
+                          <li  class="iscart"  *ngIf="cart">
                             <a href="#">
                               <div class="icon-large">
                                   <i class="ri-shopping-cart-line"></i>
-                                  <div class="fly-item"><span class="item-number">0</span></div>
+                                  <div class="fly-item"><span class="item-number">{{ cart.totalQuantity}}</span></div>
                               </div>
                               <div class="icon-text">
                                   <div class="mini-text">Total</div>
-                                  <div class="cart-total">$2.3</div>
+                                  <div class="cart-total">${{ cart.totalPrice }}</div>
                               </div>
                             </a>
-                            <div class="mini-cart">
+                            <div class="mini-cart"> 
                               <div class="content">
                                   <div class="cart-head">
-                                      5 item in cart
+                                    {{ cart.totalQuantity }} items in cart
                                   </div>
                                   <div class="cart-body">
                                       <ul class="products mini">
-                                          <li class="item">
+                                          <li class="item" *ngFor="let item of cart.cartItems">
                                               <div class="thumbnail object-cover">
-                                                  <a href="#"> <img src="/assets/img/products/home2.jpg" alt=""></a>
+                                                  <a href="#"> <img [src]="item.imgUrl" [alt]="item.name"></a>
                                               </div>
                                               <div class="item-content">
-                                                  <p><a href="#">Dimmable ceiling light modern</a></p>
+                                                  <p><a href="#">{{ item.name }}</a></p>
                                                   <span class="price">
-                                                      <span>$ 278.32</span>
-                                                      <span class="fly-item"><span>2x</span></span>
+                                                      <span>${{ item.price }}</span>
+                                                      <span class="fly-item"><span>{{ item.quantity }}x</span></span>                               
                                                   </span>
+                                                  <div class="item-footer">
+                                                    <span>{{ item.colorName }}</span>
+                                                    <span>{{ item.sizeName }}</span>
+                                                  </div>
                                               </div>
-                                              <a href="#" class="item-remove"><i class="ri-close-line" > </i></a>
+                                              <a href="#" class="item-remove" (click)="onRemoveItem(item.id, $event)"><i class="ri-close-line" > </i></a>
                                           </li>
                                       </ul>
                                   </div>
                                   <div class="cart-footer">
                                       <div class="subtotal">
                                           <p>Subtotal</p>
-                                          <p><strong>$136.2</strong></p>
+                                          <p><strong>${{ cart.totalPrice }}</strong></p>
                                       </div>
                                       <div class="actions">
-                                          <a href="/cart.html" class="primary-button">Checkout</a>
-                                          <a href="/checkout.html" class="secondary-button">View Cart</a>
+                                        <a routerLink="/cart" class="primary-button">View Cart</a>
+                                        <a routerLink="/checkout" class="secondary-button">Checkout</a>
                                       </div>
                                   </div>
                               </div>

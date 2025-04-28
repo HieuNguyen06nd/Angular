@@ -1,0 +1,3 @@
+.products.cart table tbody td:first-child {
+    padding-left: 2em;
+}

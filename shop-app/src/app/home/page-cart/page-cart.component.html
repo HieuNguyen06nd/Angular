@@ -1,0 +1,108 @@
+<div class="single-cart">
+  <div class="container">
+    <div class="wrapper">
+      <div class="page-title"><h1>Giỏ hàng</h1></div>
+      <div class="products one cart">
+        <div class="flexwrap">
+          <form class="form-cart" *ngIf="cart">
+            <div class="item">
+              <table id="cart-table">
+                <thead>
+                  <tr>
+                    <th><input type="checkbox" (change)="toggleSelectAll($event)" [checked]="allSelected"/></th>
+                    <th>Item</th><th>Price</th><th>Qty</th><th>Subtotal</th><th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of cart.cartItems">
+                    <td>
+                        <input
+                        type="checkbox"
+                        [checked]="item.selected"
+                        (change)="onItemCheck(item.id, $event)"
+                      />                      
+                    </td>
+                    <td class="flexitem">
+                      <div class="thumbnail object-cover">
+                        <a [routerLink]="['/product', item.productItemId]">
+                          <img [src]="item.imgUrl" alt="{{item.name}}">
+                        </a>
+                      </div>
+                      <div class="content">
+                        <strong>
+                          <a [routerLink]="['/product', item.productItemId]">{{item.name}}</a>
+                        </strong>
+                        <p>Color: {{item.colorName || '–'}}</p>
+                      </div>
+                    </td>
+                    <td>{{item.price | currency:'VND':'symbol':'1.0-0'}}</td>
+                    <td>
+                      <div class="qty-control flexitem">
+                        <button type="button" (click)="decrease(item)">−</button>
+                        <input type="text" [value]="item.quantity" readonly class="qty-input form-control" />
+                        <button type="button" (click)="increase(item)">+</button>
+                      </div>
+                    </td>
+                    <td>{{ (item.price * item.quantity) | currency:'VND':'symbol':'1.0-0' }}</td>
+                    <td>
+                      <button type="button" class="item-remove btn btn-sm btn-danger" (click)="remove(item.id, $event)">
+                        <i class="ri-close-line"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </form>
+          <div class="cart-summary styled">
+            <div class="item">
+              <div class="coupon">
+                <input type="text" placeholder="Enter coupon" />
+                <button>Apply</button>
+              </div>
+              <div class="shipping-rate">
+                <div class="has-child expand">
+                  <a href="#" class="icon-small" (click)="toggleShipping($event)">{{showShipping ? '−' : '+'}} Estimate Shipping and Tax</a>
+                  <div class="content" *ngIf="showShipping">
+                    <div class="countries">
+                      <label for="country">Country</label>
+                      <select id="country" [(ngModel)]="selectedCountryIso" (ngModelChange)="onCountryChange($event)" class="form-select">
+                        <option value="" disabled>Chọn quốc gia</option>
+                        <option *ngFor="let c of countries" [value]="c.isoCode">{{c.name}}</option>
+                      </select>
+                    </div>
+                    <div class="states" *ngIf="states.length">
+                      <label for="states">State/Province</label>
+                      <select id="states" [(ngModel)]="selectedStateIso" (ngModelChange)="onStateChange($event)" class="form-select">
+                        <option value="" disabled>Chọn tỉnh/thành</option>
+                        <option *ngFor="let s of states" [value]="s.isoCode">{{s.name}}</option>
+                      </select>
+                    </div>
+                    <div class="cities" *ngIf="cities.length">
+                      <label for="city">City</label>
+                      <select id="city" class="form-select">
+                        <option value="" disabled>Chọn thành phố</option>
+                        <option *ngFor="let city of cities" [value]="city.name">{{city.name}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="cart-total">
+                <table>
+                  <tbody>
+                    <tr><th>Subtotal</th><td>{{subtotal | currency:'VND':'symbol':'1.0-0'}}</td></tr>
+                    <tr><th>Discount</th><td>-$12.32</td></tr>
+                    <tr><th>Shipping <span class="mini-text">({{selectedRate==='flat'?'Flat':'Best'}})</span></th><td>{{shippingRates[selectedRate] | currency:'VND':'symbol':'1.0-0'}}</td></tr>
+                    <tr class="grand-total"><th>TOTAL</th><td><strong>{{grandTotal | currency:'VND':'symbol':'1.0-0'}}</strong></td></tr>
+                  </tbody>
+                </table>
+                <button class="secondary-button" (click)="checkout()">Checkout</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,20 @@
+.edit-address-form {
+    position: relative;
+    padding-top: 30px; /* tạo khoảng cách cho nút X */
+  }
+  
+  .close-button {
+    position: absolute;
+    top: -20px;
+    right: 5px;
+    background: transparent;
+    border: none;
+    font-size: 40px;
+    color: #999;
+    cursor: pointer;
+  }
+  
+  .close-button:hover {
+    color: red;
+  }
+  
